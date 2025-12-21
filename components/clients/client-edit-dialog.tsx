@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { Pencil } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
     Dialog,
@@ -21,8 +20,15 @@ import { Database } from '@/types/database.types'
 
 type Client = Database['public']['Tables']['clients']['Row']
 
-export function ClientEditDialog({ client }: { client: Client }) {
-    const [open, setOpen] = useState(false)
+export function ClientEditDialog({
+    client,
+    open,
+    onOpenChange
+}: {
+    client: Client
+    open: boolean
+    onOpenChange: (open: boolean) => void
+}) {
     const [loading, setLoading] = useState(false)
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -37,18 +43,14 @@ export function ClientEditDialog({ client }: { client: Client }) {
             toast.error(result.error)
         } else {
             toast.success('Cliente actualizado correctamente')
-            setOpen(false)
+            onOpenChange(false)
         }
         setLoading(false)
     }
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white">
-                    <Pencil className="h-5 w-5" />
-                </Button>
-            </DialogTrigger>
+        <Dialog open={open} onOpenChange={onOpenChange}>
+            {/* Trigger handled externally */}
             <DialogContent className="sm:max-w-[600px] bg-[#1a1a1a] text-white border-gray-800">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>

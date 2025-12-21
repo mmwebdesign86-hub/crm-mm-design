@@ -160,3 +160,22 @@ export async function toggleServiceNotification(serviceId: string, clientId: str
     revalidatePath(`/clients/${clientId}`)
     return { success: true }
 }
+
+export async function deleteClientAction(clientId: string) {
+    const supabase = await createClient()
+
+    // Delete client (services should cascade if configured in DB, otherwise we might need to delete them first)
+    // Assuming 'cascade' on delete is set in DB or we just try deleting.
+    const { error } = await supabase
+        .from('clients')
+        .delete()
+        .eq('id', clientId)
+
+    if (error) {
+        console.error('Error deleting client:', error)
+        return { error: `Error al eliminar cliente: ${error.message}` }
+    }
+
+    revalidatePath('/clients')
+    return { success: true }
+}

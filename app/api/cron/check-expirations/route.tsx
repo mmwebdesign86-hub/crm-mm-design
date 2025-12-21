@@ -9,6 +9,12 @@ export const dynamic = 'force-dynamic'; // Ensure the route is not cached by Nex
 
 export async function GET(req: NextRequest) {
     try {
+        // 0. Security Check
+        const authHeader = req.headers.get('authorization');
+        if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+            return new Response('Unauthorized', { status: 401 });
+        }
+
         // 1. Calculate Date Range (Next 7 days)
         const today = new Date();
         const nextWeek = addDays(today, 7);

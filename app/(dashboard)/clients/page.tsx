@@ -11,6 +11,7 @@ import {
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Eye } from 'lucide-react'
+import { ClientActions } from '@/components/clients/client-actions'
 
 export default async function ClientsPage() {
     const supabase = await createClient()
@@ -54,12 +55,13 @@ export default async function ClientsPage() {
                                     <TableCell className="text-gray-300">{client.nombre_contacto || '-'}</TableCell>
                                     <TableCell className="text-gray-300">{client.email_contacto}</TableCell>
                                     <TableCell className="text-gray-300">{client.poblacion || '-'}</TableCell>
-                                    <TableCell className="text-right">
+                                    <TableCell className="text-right flex items-center justify-end gap-2">
                                         <Button variant="ghost" size="icon" asChild>
                                             <Link href={`/clients/${client.id}`}>
                                                 <Eye className="h-4 w-4 text-gray-400 hover:text-white" />
                                             </Link>
                                         </Button>
+                                        <ClientActions client={client} />
                                     </TableCell>
                                 </TableRow>
                             ))
