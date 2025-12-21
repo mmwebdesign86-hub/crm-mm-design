@@ -62,7 +62,7 @@ export default function LoginPage() {
                     <CardTitle className="text-2xl font-bold text-center tracking-tight text-white">
                         Acceso al Panel - MM DESIGN WEB
                     </CardTitle>
-                    <CardDescription className="text-gray-400 text-center">
+                    <CardDescription className="text-lg text-gray-300 text-center mt-2">
                         Introduce tus credenciales para administrar el CRM
                     </CardDescription>
                 </CardHeader>
@@ -100,7 +100,7 @@ export default function LoginPage() {
 
                 </CardContent>
                 <CardFooter className="justify-center">
-                    <p className="text-xs text-gray-500">
+                    <p className="text-sm text-gray-400 font-medium">
                         Sistema Protegido | MM DESIGN WEB © {new Date().getFullYear()}
                     </p>
                 </CardFooter>

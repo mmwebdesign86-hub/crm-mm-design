@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "MM DESIGN WEB - CRM",
   description: "Panel de Gestión de Clientes y Vencimientos",
+  icons: {
+    icon: "https://files.cdn-files-a.com/uploads/9116689/normal_68a01b0de6286.png",
+  },
 };
 
 export default function RootLayout({
