@@ -61,6 +61,25 @@ export async function updateClientAction(formData: FormData) {
         return { error: 'ID, Nombre Fiscal y Email son obligatorios' }
     }
 
+    let image_url: string | undefined = undefined
+    const logoFile = formData.get('logo') as File
+
+    if (logoFile && logoFile.size > 0) {
+        const fileName = `${Date.now()}_${logoFile.name.replace(/\s+/g, '-')}`
+        const { data: uploadData, error: uploadError } = await supabase.storage
+            .from('clients-logos')
+            .upload(fileName, logoFile)
+
+        if (uploadError) {
+            console.error('Error uploading logo (update):', uploadError)
+        } else {
+            const { data: { publicUrl } } = supabase.storage
+                .from('clients-logos')
+                .getPublicUrl(uploadData.path)
+            image_url = publicUrl
+        }
+    }
+
     const updatedClient: Database['public']['Tables']['clients']['Update'] = {
         nombre_fiscal,
         cif_nif: cif_nif || null,
@@ -70,8 +89,9 @@ export async function updateClientAction(formData: FormData) {
         telefono: telefono || null,
         email_contacto,
         nombre_contacto: nombre_contacto || null,
-        notas: notas || null
-    }
+        notas: notas || null,
+        ...(image_url && { image_url }) // Only update if new image uploaded
+    } as any
 
     const { error } = await supabase
         .from('clients')

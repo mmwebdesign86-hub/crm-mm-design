@@ -56,6 +56,10 @@ export function ClientDialog() {
                     <div className="grid gap-4 py-4">
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
+                                <Label htmlFor="logo">Logo Empresa</Label>
+                                <Input id="logo" name="logo" type="file" accept="image/*" className="bg-[#2a2a2a] border-gray-700 text-gray-400 file:text-white file:bg-gray-800 file:border-0 file:rounded-md file:px-2 file:mr-2 hover:file:bg-gray-700" />
+                            </div>
+                            <div className="space-y-2">
                                 <Label htmlFor="company_name">Empresa / Nombre *</Label>
                                 <Input id="company_name" name="company_name" required className="bg-[#2a2a2a] border-gray-700" />
                             </div>

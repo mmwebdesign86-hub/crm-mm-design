@@ -60,6 +60,23 @@ export function ClientEditDialog({
                         </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
+
+                        <div className="flex items-center gap-4 mb-2">
+                            {client.image_url ? (
+                                <div className="relative h-16 w-16 rounded-md overflow-hidden border border-gray-700">
+                                    <img src={client.image_url} alt="Logo actual" className="object-cover w-full h-full" />
+                                </div>
+                            ) : (
+                                <div className="h-16 w-16 bg-gray-800 rounded-md flex items-center justify-center border border-gray-700">
+                                    <span className="text-xs text-gray-500">Sin Logo</span>
+                                </div>
+                            )}
+                            <div className="space-y-2 flex-1">
+                                <Label htmlFor="logo">Logo Empresa (Opcional)</Label>
+                                <Input id="logo" name="logo" type="file" accept="image/*" className="bg-[#2a2a2a] border-gray-700 text-gray-400 file:text-white file:bg-gray-800 file:border-0 file:rounded-md file:px-2 file:mr-2 hover:file:bg-gray-700" />
+                            </div>
+                        </div>
+
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="nombre_fiscal">Nombre Fiscal *</Label>

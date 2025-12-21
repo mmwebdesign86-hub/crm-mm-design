@@ -20,7 +20,8 @@ export default async function DashboardPage() {
             clients (
                 id,
                 nombre_fiscal,
-                nombre_contacto
+                nombre_contacto,
+                image_url
             )
         `)
         .eq('status', 'active')
@@ -98,9 +99,17 @@ export default async function DashboardPage() {
 
                         {/* Header Image & Name */}
                         <div className="flex flex-row p-6 gap-4 items-center border-b border-gray-100">
-                            {/* Placeholder Photo */}
-                            <div className="h-16 w-16 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0 shadow-inner">
-                                <User className="h-8 w-8 text-gray-400" />
+                            {/* Photo or Placeholder */}
+                            <div className="h-16 w-16 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0 shadow-inner overflow-hidden border border-gray-100 relative">
+                                {info.image_url ? (
+                                    <img
+                                        src={info.image_url}
+                                        alt={info.nombre_fiscal}
+                                        className="object-cover w-full h-full"
+                                    />
+                                ) : (
+                                    <User className="h-8 w-8 text-gray-400" />
+                                )}
                             </div>
                             <div className="overflow-hidden">
                                 <h2 className="text-xl font-black text-black uppercase leading-tight truncate">

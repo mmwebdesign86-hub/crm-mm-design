@@ -25,9 +25,31 @@ export async function createClientAction(formData: FormData) {
         return { error: 'Nombre de empresa y email de contacto son obligatorios' }
     }
 
-    // Use the Spanish column names based on User's DB
     // company_name (from form) -> nombre_fiscal
     // contact_email (from form) -> email_contacto
+
+    let image_url = null
+    const logoFile = formData.get('logo') as File
+
+    if (logoFile && logoFile.size > 0) {
+        const fileName = `${Date.now()}_${logoFile.name.replace(/\s+/g, '-')}`
+        const { data: uploadData, error: uploadError } = await supabase.storage
+            .from('clients-logos')
+            .upload(fileName, logoFile)
+
+        if (uploadError) {
+            console.error('Error uploading logo:', uploadError)
+            // We continue creating client anyway, but log error.
+            // Or return error? User strictness: robust code.
+            // Let's log and continue without logo for now to avoid blocking client creation.
+        } else {
+            const { data: { publicUrl } } = supabase.storage
+                .from('clients-logos')
+                .getPublicUrl(uploadData.path)
+            image_url = publicUrl
+        }
+    }
+
     const newClient: Database['public']['Tables']['clients']['Insert'] = {
         nombre_fiscal: company_name,
         cif_nif: nif_cif || null,
@@ -38,7 +60,8 @@ export async function createClientAction(formData: FormData) {
         email_contacto: contact_email,
         telefono: contact_phone || null,
         notas: notes || null,
-    }
+        image_url: image_url
+    } as any
 
     const { error } = await supabase.from('clients').insert(newClient)
 
