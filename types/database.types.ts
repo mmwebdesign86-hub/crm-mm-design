@@ -22,6 +22,7 @@ export interface Database {
                     email_contacto: string
                     telefono: string | null
                     notas: string | null
+                    image_url: string | null
                 }
                 Insert: {
                     id?: string
@@ -35,6 +36,7 @@ export interface Database {
                     email_contacto: string
                     telefono?: string | null
                     notas?: string | null
+                    image_url?: string | null
                 }
                 Update: {
                     id?: string
@@ -48,6 +50,7 @@ export interface Database {
                     email_contacto?: string
                     telefono?: string | null
                     notas?: string | null
+                    image_url?: string | null
                 }
                 Relationships: []
             }
