@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import { ServiceDialog } from '@/components/services/service-dialog'
-import { ClientEditDialog } from '@/components/clients/client-edit-dialog'
+import { ClientActions } from '@/components/clients/client-actions'
 import { ServiceList } from '@/components/services/service-list'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Mail, Phone, MapPin, Building2, FileText } from 'lucide-react'
@@ -43,7 +43,7 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
                 </Button>
                 <div className="flex items-center gap-3">
                     <h1 className="text-3xl font-bold text-white max-w-[600px] truncate">{client.nombre_fiscal}</h1>
-                    <ClientEditDialog client={client} />
+                    <ClientActions client={client} />
                 </div>
             </div>
 
