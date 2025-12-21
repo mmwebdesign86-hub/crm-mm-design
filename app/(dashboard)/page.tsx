@@ -98,20 +98,20 @@ export default async function DashboardPage() {
                     <Card key={info.id} className="bg-white text-black shadow-xl border-none overflow-hidden hover:shadow-2xl transition-shadow duration-300 flex flex-col">
 
                         {/* Header Image & Name */}
-                        <div className="flex flex-row p-6 gap-4 items-center border-b border-gray-100">
-                            {/* Photo or Placeholder */}
-                            <div className="h-16 w-16 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0 shadow-inner overflow-hidden border border-gray-100 relative">
+                        <div className="flex flex-col sm:flex-row p-6 gap-4 items-center border-b border-gray-100">
+                            {/* Photo or Placeholder - Larger & Rectangular */}
+                            <div className="h-24 w-48 bg-gray-50 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm border border-gray-200 relative p-2">
                                 {info.image_url ? (
                                     <img
                                         src={info.image_url}
                                         alt={info.nombre_fiscal}
-                                        className="object-cover w-full h-full"
+                                        className="object-contain w-full h-full"
                                     />
                                 ) : (
-                                    <User className="h-8 w-8 text-gray-400" />
+                                    <User className="h-10 w-10 text-gray-300" />
                                 )}
                             </div>
-                            <div className="overflow-hidden">
+                            <div className="overflow-hidden text-center sm:text-left">
                                 <h2 className="text-xl font-black text-black uppercase leading-tight truncate">
                                     {info.nombre_fiscal}
                                 </h2>
