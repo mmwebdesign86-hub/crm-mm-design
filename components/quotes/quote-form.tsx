@@ -24,6 +24,7 @@ export function QuoteForm({ clients }: { clients: any[] }) {
     const [items, setItems] = useState([{ concept: '', description: '', price: 0 }])
     const [notes, setNotes] = useState('')
     const [total, setTotal] = useState(0)
+    const [date, setDate] = useState(new Date().toISOString().split('T')[0])
 
     // Calculate total whenever items change
     useEffect(() => {
@@ -55,7 +56,7 @@ export function QuoteForm({ clients }: { clients: any[] }) {
         formData.append('items', JSON.stringify(items))
         formData.append('notes', notes)
         formData.append('total', total.toString())
-        formData.append('date', new Date().toISOString())
+        formData.append('date', date)
 
         const result = await createQuoteAction(formData)
 
@@ -108,9 +109,10 @@ export function QuoteForm({ clients }: { clients: any[] }) {
                 <div className="space-y-2">
                     <Label className="text-white">Fecha</Label>
                     <Input
-                        value={new Date().toLocaleDateString()}
-                        disabled
-                        className="bg-gray-800 border-gray-700 text-gray-400"
+                        type="date"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                        className="bg-transparent border-gray-700 text-white w-full [color-scheme:dark]"
                     />
                 </div>
             </div>
@@ -191,7 +193,7 @@ export function QuoteForm({ clients }: { clients: any[] }) {
                     />
                 </div>
 
-                <div className="w-full md:w-64 space-y-4 bg-[#1a1a1a] p-6 rounded-xl border border-gray-800">
+                <div className="w-full md:w-64 space-y-4 bg-[#1a1a1a] p-6 rounded-xl border border-gray-800 flex-shrink-0">
                     <div className="flex justify-between items-center">
                         <span className="text-gray-400">Base Imponible</span>
                         <span className="text-white font-mono">{total.toFixed(2)} €</span>
@@ -205,7 +207,7 @@ export function QuoteForm({ clients }: { clients: any[] }) {
                     <Button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full bg-[#DC2626] hover:bg-red-700 text-white font-bold h-12 text-lg shadow-lg shadow-red-900/20"
+                        className="w-full bg-[#DC2626] hover:bg-red-700 text-white font-bold py-3 h-auto whitespace-normal leading-tight text-base shadow-lg shadow-red-900/20"
                     >
                         {isLoading ? 'Guardando...' : 'GUARDAR PRESUPUESTO'}
                     </Button>
