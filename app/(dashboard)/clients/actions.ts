@@ -22,13 +22,10 @@ export async function createClientAction(formData: FormData) {
 
     const trade_name = formData.get('trade_name') as string
     const mobile_phone = formData.get('mobile_phone') as string
-    const website_url = formData.get('website_url') as string
+    // Extract all website URLs and filter out empty ones
+    const website_urls_raw = formData.getAll('website_urls')
+    const website_urls = website_urls_raw.map(url => url.toString()).filter(url => url.trim() !== '')
     const province = formData.get('province') as string
-
-    // Simple validation
-    if (!company_name || !contact_email) {
-        return { error: 'Nombre de empresa y email de contacto son obligatorios' }
-    }
 
     // company_name (from form) -> nombre_fiscal
     // contact_email (from form) -> email_contacto
@@ -67,7 +64,7 @@ export async function createClientAction(formData: FormData) {
         email_contacto: contact_email,
         telefono: contact_phone || null,
         mobile_phone: mobile_phone || null,
-        website_url: website_url || null,
+        website_urls: website_urls.length > 0 ? website_urls : null,
         notas: notes || null,
         image_url: image_url
     } as any

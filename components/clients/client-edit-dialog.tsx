@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { toast } from 'sonner'
+import { Plus, Trash2 } from 'lucide-react'
 import { updateClientAction } from '@/app/(dashboard)/clients/[id]/actions'
 import { Database } from '@/types/database.types'
 
@@ -29,6 +30,25 @@ export function ClientEditDialog({
     onOpenChange: (open: boolean) => void
 }) {
     const [loading, setLoading] = useState(false)
+    const [urls, setUrls] = useState<string[]>(
+        client.website_urls && client.website_urls.length > 0
+            ? client.website_urls
+            : ['']
+    )
+
+    const addUrl = () => setUrls([...urls, ''])
+    const removeUrl = (index: number) => {
+        const newUrls = [...urls]
+        newUrls.splice(index, 1)
+        if (newUrls.length === 0) newUrls.push('')
+        setUrls(newUrls)
+    }
+
+    const handleUrlChange = (index: number, value: string) => {
+        const newUrls = [...urls]
+        newUrls[index] = value
+        setUrls(newUrls)
+    }
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -159,14 +179,28 @@ export function ClientEditDialog({
                                     className="bg-[#2a2a2a] border-gray-700"
                                 />
                             </div>
+
+                            {/* MULTI-WEB SUPPORT */}
                             <div className="space-y-2">
-                                <Label htmlFor="website_url">Sitio Web</Label>
-                                <Input
-                                    id="website_url"
-                                    name="website_url"
-                                    defaultValue={client.website_url || ''}
-                                    className="bg-[#2a2a2a] border-gray-700"
-                                />
+                                <Label>Sitio Web</Label>
+                                {urls.map((url, index) => (
+                                    <div key={index} className="flex gap-2">
+                                        <Input
+                                            name="website_urls"
+                                            value={url}
+                                            onChange={(e) => handleUrlChange(index, e.target.value)}
+                                            className="bg-[#2a2a2a] border-gray-700"
+                                        />
+                                        <Button type="button" variant="ghost" size="icon" onClick={() => removeUrl(index)} className="text-red-400 hover:text-red-300">
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                        {index === urls.length - 1 && (
+                                            <Button type="button" variant="ghost" size="icon" onClick={addUrl} className="text-green-400 hover:text-green-300">
+                                                <Plus className="h-4 w-4" />
+                                            </Button>
+                                        )}
+                                    </div>
+                                ))}
                             </div>
                         </div>
 

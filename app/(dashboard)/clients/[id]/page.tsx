@@ -4,7 +4,7 @@ import { ServiceDialog } from '@/components/services/service-dialog'
 import { ClientActions } from '@/components/clients/client-actions'
 import { ServiceList } from '@/components/services/service-list'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Mail, Phone, MapPin, Building2, FileText } from 'lucide-react'
+import { Mail, Phone, MapPin, Building2, FileText, Globe } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
@@ -49,18 +49,18 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
 
             {/* Client Info Grid */}
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                <Card className="bg-[#1a1a1a] border-[#333] text-white">
+                <Card className="bg-white border-gray-200 text-gray-900 shadow-sm">
                     <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium text-gray-400">Datos Fiscales</CardTitle>
+                        <CardTitle className="text-sm font-medium text-gray-500 uppercase tracking-wider">Datos Fiscales</CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-2">
-                        <div className="flex items-center gap-2">
-                            <Building2 className="h-4 w-4 text-[#8B0000]" />
-                            <span className="font-bold">{client.cif_nif || 'No NIF'}</span>
+                    <CardContent className="space-y-3">
+                        <div className="flex items-center gap-3">
+                            <Building2 className="h-5 w-5 text-[#DC2626]" />
+                            <span className="font-bold text-lg">{client.cif_nif || 'No NIF'}</span>
                         </div>
-                        <div className="flex items-start gap-2">
-                            <MapPin className="h-4 w-4 text-[#8B0000] mt-1" />
-                            <span className="text-sm text-gray-300">
+                        <div className="flex items-start gap-3">
+                            <MapPin className="h-5 w-5 text-[#DC2626] mt-1" />
+                            <span className="text-sm text-gray-600">
                                 {client.direccion}<br />
                                 {client.poblacion} {client.codigo_postal}
                             </span>
@@ -68,33 +68,61 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
                     </CardContent>
                 </Card>
 
-                <Card className="bg-[#1a1a1a] border-[#333] text-white">
+                <Card className="bg-white border-gray-200 text-gray-900 shadow-sm">
                     <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium text-gray-400">Contacto</CardTitle>
+                        <CardTitle className="text-sm font-medium text-gray-500 uppercase tracking-wider">Contacto</CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-2">
-                        <div className="flex items-center gap-2">
+                    <CardContent className="space-y-3">
+                        <div className="flex items-center gap-3">
                             <span className="text-sm font-semibold">{client.nombre_contacto}</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                            <Mail className="h-4 w-4 text-[#8B0000]" />
-                            <a href={`mailto:${client.email_contacto}`} className="text-sm hover:underline text-gray-300">{client.email_contacto}</a>
+                        <div className="flex items-center gap-3">
+                            <Mail className="h-5 w-5 text-[#DC2626]" />
+                            <a href={`mailto:${client.email_contacto}`} className="text-sm hover:underline text-gray-600 font-medium">{client.email_contacto}</a>
                         </div>
-                        <div className="flex items-center gap-2">
-                            <Phone className="h-4 w-4 text-[#8B0000]" />
-                            <span className="text-sm text-gray-300">{client.telefono || '-'}</span>
+                        <div className="flex items-center gap-3">
+                            <Phone className="h-5 w-5 text-[#DC2626]" />
+                            <span className="text-sm text-gray-600">{client.telefono || '-'}</span>
                         </div>
+                        {client.mobile_phone && (
+                            <div className="flex items-center gap-3">
+                                <Phone className="h-5 w-5 text-[#DC2626]" />
+                                <span className="text-sm text-gray-600">{client.mobile_phone}</span>
+                            </div>
+                        )}
+                        {/* Multi-Web Display */}
+                        {client.website_urls && client.website_urls.length > 0 ? (
+                            <div className="space-y-1 pt-1 border-t border-gray-100 mt-2">
+                                {client.website_urls.map((url: string, idx: number) => (
+                                    <div key={idx} className="flex items-center gap-3">
+                                        <Globe className="h-5 w-5 text-[#DC2626]" />
+                                        <a href={url} target="_blank" rel="noopener noreferrer" className="text-sm hover:underline text-blue-600 truncate max-w-[200px]">
+                                            {url}
+                                        </a>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            client.website_url && (
+                                <div className="flex items-center gap-3 pt-1 border-t border-gray-100 mt-2">
+                                    <Globe className="h-5 w-5 text-[#DC2626]" />
+                                    <a href={client.website_url} target="_blank" rel="noopener noreferrer" className="text-sm hover:underline text-blue-600 truncate max-w-[200px]">
+                                        {client.website_url}
+                                    </a>
+                                </div>
+                            )
+                        )}
                     </CardContent>
                 </Card>
 
-                <Card className="bg-[#1a1a1a] border-[#333] text-white">
+                <Card className="bg-white border-gray-200 text-gray-900 shadow-sm">
                     <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium text-gray-400">Notas / Observaciones</CardTitle>
+                        <CardTitle className="text-sm font-medium text-gray-500 uppercase tracking-wider">Notas / Observaciones</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="flex items-start gap-2">
-                            <FileText className="h-4 w-4 text-[#8B0000] mt-1" />
-                            <p className="text-sm text-gray-300 whitespace-pre-wrap">{client.notas || 'Sin notas.'}</p>
+                        <div className="flex items-start gap-3">
+                            <FileText className="h-5 w-5 text-[#DC2626] mt-1" />
+                            <p className="text-sm text-gray-600 whitespace-pre-wrap leading-relaxed">{client.notas || 'Sin notas.'}</p>
                         </div>
                     </CardContent>
                 </Card>

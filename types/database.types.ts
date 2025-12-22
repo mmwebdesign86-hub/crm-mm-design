@@ -25,7 +25,7 @@ export interface Database {
                     image_url: string | null
                     trade_name: string | null
                     mobile_phone: string | null
-                    website_url: string | null
+                    website_urls: string[] | null
                     province: string | null
                 }
                 Insert: {
@@ -43,7 +43,7 @@ export interface Database {
                     image_url?: string | null
                     trade_name?: string | null
                     mobile_phone?: string | null
-                    website_url?: string | null
+                    website_urls?: string[] | null
                     province?: string | null
                 }
                 Update: {
@@ -61,7 +61,7 @@ export interface Database {
                     image_url?: string | null
                     trade_name?: string | null
                     mobile_phone?: string | null
-                    website_url?: string | null
+                    website_urls?: string[] | null
                     province?: string | null
                 }
                 Relationships: []

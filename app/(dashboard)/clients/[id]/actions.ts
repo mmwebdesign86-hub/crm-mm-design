@@ -58,7 +58,9 @@ export async function updateClientAction(formData: FormData) {
 
     const trade_name = formData.get('trade_name') as string
     const mobile_phone = formData.get('mobile_phone') as string
-    const website_url = formData.get('website_url') as string
+    // Extract all website URLs and filter out empty ones
+    const website_urls_raw = formData.getAll('website_urls')
+    const website_urls = website_urls_raw.map(url => url.toString()).filter(url => url.trim() !== '')
     const province = formData.get('province') as string
 
     // Simple validation
@@ -97,7 +99,7 @@ export async function updateClientAction(formData: FormData) {
         mobile_phone: mobile_phone || null,
         email_contacto,
         nombre_contacto: nombre_contacto || null,
-        website_url: website_url || null,
+        website_urls: website_urls.length > 0 ? website_urls : null,
         notas: notas || null,
         ...(image_url && { image_url }) // Only update if new image uploaded
     } as any
