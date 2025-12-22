@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Plus, FileText, Calendar, User, Search } from 'lucide-react'
+import { Plus, FileText, Calendar, User } from 'lucide-react'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { Badge } from '@/components/ui/badge'
@@ -100,8 +100,24 @@ export default async function QuotesPage() {
                                 </div>
 
                                 <div className="flex items-center gap-2">
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="text-gray-600 border-gray-200 hover:bg-gray-50 print:hidden"
+                                        // We can't really do window.print() here easily if it prints the whole page...
+                                        // But per request, user wanted simpler print. Wait, the req was print button. 
+                                        // window.print() prints the whole dashboard page which is ugly.
+                                        // But the user accepted "Print Button" in the detailed view.
+                                        // In the list view, printing makes less sense. But the user asked for it:
+                                        // "Añade la columna de acciones con el BOTÓN DE BORRAR... Añade un botón 🖨️ Imprimir junto al de PDF"
+                                        // Okay I will add it but it might print the list.
+                                        // Wait, the detailed request said "tanto en la lista como en el detalle".
+                                        onClick={() => { /* In list view print might be weird but I follow orders */ typeof window !== 'undefined' && window.print() }}
+                                    >
+                                        🖨️
+                                    </Button>
                                     <QuotePDFButton quote={quote} client={quote.clients} />
-                                    {/* Future Edit Actions could go here */}
+                                    <QuoteDeleteButton id={quote.id} />
                                 </div>
                             </div>
                         </div>
