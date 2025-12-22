@@ -57,7 +57,7 @@ export function QuotePDFButton({ quote, client }: QuotePDFButtonProps) {
         doc.setFont('helvetica', 'normal')
         doc.setFontSize(9)
         doc.text('Mario Albaladejo Barastegui', 195, 25, { align: 'right' })
-        doc.text('NIF: 36044306-P', 195, 30, { align: 'right' })
+        doc.text('NIF: 46044306-P', 195, 30, { align: 'right' })
         doc.text('C/ Sant Ramon, 29 Bajos', 195, 35, { align: 'right' })
         doc.text('08350, Arenys de Mar, Barcelona', 195, 40, { align: 'right' })
         doc.text('656948148 | contacto@mmdesignweb.com', 195, 45, { align: 'right' })
