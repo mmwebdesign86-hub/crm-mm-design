@@ -98,7 +98,7 @@ export default async function DashboardPage() {
                     <Card key={info.id} className="bg-white text-black shadow-xl border-none overflow-hidden hover:shadow-2xl transition-shadow duration-300 flex flex-col">
 
                         {/* Header Image & Name */}
-                        <div className="flex flex-col sm:flex-row p-6 gap-4 items-center border-b border-gray-100">
+                        <div className="flex flex-col sm:flex-row p-3 gap-2 items-center border-b border-gray-100">
                             {/* Photo or Placeholder - Larger & Rectangular */}
                             <div className="h-24 w-48 bg-gray-50 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm border border-gray-200 relative p-2">
                                 {info.image_url ? (
@@ -111,34 +111,34 @@ export default async function DashboardPage() {
                                     <User className="h-10 w-10 text-gray-300" />
                                 )}
                             </div>
-                            <div className="overflow-hidden text-center sm:text-left">
+                            <div className="overflow-hidden text-center sm:text-left w-full">
                                 <h2 className="text-xl font-black text-black uppercase leading-tight truncate">
                                     {info.nombre_fiscal}
                                 </h2>
-                                <p className="text-sm text-gray-500 truncate">{info.nombre_contacto || 'Sin contacto'}</p>
+                                <p className="text-xs text-gray-500 truncate mt-1">{info.nombre_contacto || 'Sin contacto'}</p>
                             </div>
                         </div>
 
                         {/* Body: Service List */}
-                        <CardContent className="p-6 flex-1 space-y-4">
+                        <CardContent className="p-3 flex-1 space-y-1.5">
                             {services.map((service: any) => {
                                 const endDate = parseISO(service.end_date);
-                                let icon = <CheckCircle className="h-4 w-4 text-green-600" />;
+                                let icon = <CheckCircle className="h-3.5 w-3.5 text-green-600" />;
                                 let dateClass = "text-gray-600";
 
                                 if (isBefore(endDate, today)) {
-                                    icon = <AlertCircle className="h-4 w-4 text-red-600 font-bold" />;
+                                    icon = <AlertCircle className="h-3.5 w-3.5 text-red-600 font-bold" />;
                                     dateClass = "text-red-600 font-bold";
                                 } else if (isBefore(endDate, nextWeek)) {
-                                    icon = <Clock className="h-4 w-4 text-red-500" />;
+                                    icon = <Clock className="h-3.5 w-3.5 text-red-500" />;
                                     dateClass = "text-red-500 font-semibold";
                                 } else if (isBefore(endDate, complexLimit)) {
-                                    icon = <Calendar className="h-4 w-4 text-yellow-600" />;
+                                    icon = <Calendar className="h-3.5 w-3.5 text-yellow-600" />;
                                     dateClass = "text-yellow-600";
                                 }
 
                                 return (
-                                    <div key={service.id} className="flex items-center justify-between text-sm group/item">
+                                    <div key={service.id} className="flex items-center justify-between text-xs group/item">
                                         <div className="flex items-center gap-2 overflow-hidden">
                                             {icon}
                                             <span className="truncate font-medium text-gray-800" title={service.description || service.type}>
