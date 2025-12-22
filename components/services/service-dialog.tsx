@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/select"
 import { toast } from 'sonner'
 import { createServiceAction } from '@/app/(dashboard)/clients/[id]/actions'
+import { SERVICE_TYPES } from '@/lib/constants'
 
 export function ServiceDialog({ clientId }: { clientId: string }) {
     const [open, setOpen] = useState(false)
@@ -64,9 +65,6 @@ export function ServiceDialog({ clientId }: { clientId: string }) {
                     <div className="grid gap-4 py-4">
                         <div className="space-y-2">
                             <Label htmlFor="type">Tipo de Servicio *</Label>
-                            import {SERVICE_TYPES} from '@/lib/constants'
-
-                            // ... (in component)
                             <Select name="type" required>
                                 <SelectTrigger className="bg-[#2a2a2a] border-gray-700">
                                     <SelectValue placeholder="Selecciona..." />

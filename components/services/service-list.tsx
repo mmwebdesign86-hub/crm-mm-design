@@ -19,6 +19,7 @@ import { toast } from 'sonner'
 import { deleteServiceAction, toggleServiceNotification } from '@/app/(dashboard)/clients/[id]/actions'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
+import { getServiceLabel } from '@/lib/constants'
 
 type Service = Database['public']['Tables']['services']['Row']
 
@@ -83,9 +84,6 @@ export function ServiceList({ services }: { services: Service[] }) {
                     ) : (
                         services.map((service) => (
                             <TableRow key={service.id} className="border-[#333] hover:bg-[#1a1a1a]">
-                                import {getServiceLabel} from '@/lib/constants'
-
-                                // ...
                                 <TableCell className="font-medium text-white">{getServiceLabel(service.type)}</TableCell>
                                 <TableCell className="text-gray-300">{service.description || '-'}</TableCell>
                                 <TableCell className="text-gray-300">{service.price ? `${service.price}€` : '-'}</TableCell>

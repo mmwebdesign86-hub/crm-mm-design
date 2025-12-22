@@ -25,6 +25,7 @@ import {
 import { toast } from 'sonner'
 import { updateServiceAction } from '@/app/(dashboard)/clients/[id]/actions'
 import { Database } from '@/types/database.types'
+import { SERVICE_TYPES } from '@/lib/constants'
 
 type Service = Database['public']['Tables']['services']['Row']
 
@@ -68,9 +69,6 @@ export function ServiceEditDialog({ service }: { service: Service }) {
                     <div className="grid gap-4 py-4">
                         <div className="space-y-2">
                             <Label htmlFor="type">Tipo de Servicio *</Label>
-                            import {SERVICE_TYPES} from '@/lib/constants'
-
-                            // ... (in component)
                             <Select name="type" defaultValue={service.type} required>
                                 <SelectTrigger className="bg-[#2a2a2a] border-gray-700">
                                     <SelectValue />
