@@ -17,21 +17,15 @@ export function QuotePDFButton({ quote, client }: QuotePDFButtonProps) {
         const doc = new jsPDF()
 
         // --- COMPANY LOGO & INFO ---
-        // Logo
-        const logoUrl = 'https://files.cdn-files-a.com/uploads/9284533/normal_694957bcd697a.png'
-        const img = new Image()
-        img.src = logoUrl
-
-        // We need to handle image loading for cleaner PDF, but for button click it usually works if cached.
-        // For robustness, we might want to just proceed or try/catch.
-        // Let's assume standard behavior. If it fails to load instantly, it might be missing in first click.
-        // Ideally we fetch it as blob-base64. But let's try direct URL addImage if CORS allows, otherwise blank.
-        // actually standard addImage supports url in many cases.
-        try {
-            doc.addImage(img, 'PNG', 15, 15, 40, 15) // x, y, w, h
-        } catch (e) {
-            console.warn('Logo load error', e)
-        }
+        // Logo - DRAWN FALLBACK (Red Box with White Text) to avoid CORS/Load issues
+        doc.setFillColor(220, 38, 38) // MM Red
+        doc.rect(15, 15, 50, 20, 'F')
+        doc.setTextColor(255, 255, 255)
+        doc.setFontSize(14)
+        doc.setFont('helvetica', 'bold')
+        doc.text('MM DESIGN', 40, 23, { align: 'center' })
+        doc.text('WEB', 40, 30, { align: 'center' })
+        doc.setTextColor(0, 0, 0) // Reset to black
 
         // Mario's Info (Right aligned)
         doc.setFontSize(10)
@@ -88,13 +82,27 @@ export function QuotePDFButton({ quote, client }: QuotePDFButtonProps) {
             head: [['Concepto', 'Descripción', 'Precio']],
             body: tableBody,
             theme: 'grid',
-            headStyles: { fillColor: [220, 38, 38], textColor: 255, fontStyle: 'bold' }, // Red header
-            columnStyles: {
-                0: { fontStyle: 'bold', cellWidth: 50 },
-                1: { cellWidth: 'auto' },
-                2: { halign: 'right', cellWidth: 30 }
+            headStyles: {
+                fillColor: [220, 38, 38],
+                textColor: 255,
+                fontStyle: 'bold',
+                halign: 'left'
             },
-            styles: { fontSize: 9, cellPadding: 3 }
+            columnStyles: {
+                0: { cellWidth: 35, fontStyle: 'bold' }, // ~20% of 180 printable width
+                1: { cellWidth: 'auto' }, // ~60% (Auto fills remaining)
+                2: { cellWidth: 35, halign: 'right' } // ~20%
+            },
+            styles: {
+                fontSize: 10,
+                cellPadding: 3,
+                overflow: 'linebreak', // Wrap text
+                valign: 'top',
+                textColor: [50, 50, 50] // Dark Gray
+            },
+            didDrawPage: (data) => {
+                // Footer helper if needed
+            }
         })
 
         // --- TOTAL ---
