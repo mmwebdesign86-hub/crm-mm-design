@@ -13,7 +13,7 @@ import {
 import { format, isPast, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { ServiceEditDialog } from './service-edit-dialog'
-import { Trash } from 'lucide-react'
+import { Trash, AlertTriangle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import { deleteServiceAction, toggleServiceNotification } from '@/app/(dashboard)/clients/[id]/actions'
@@ -94,7 +94,16 @@ export function ServiceList({ services }: { services: Service[] }) {
                                 <TableCell className="text-gray-300">{service.description || '-'}</TableCell>
                                 <TableCell className="text-gray-300">{service.price ? `${service.price}€` : '-'}</TableCell>
                                 <TableCell className="text-gray-300">
-                                    {service.end_date ? format(parseISO(service.end_date), 'dd/MM/yyyy') : '-'}
+                                    {(() => {
+                                        if (!service.end_date) return '-'
+                                        const isExpired = isPast(parseISO(service.end_date))
+                                        return (
+                                            <div className={`flex items-center gap-2 ${isExpired ? 'text-red-600 font-bold' : ''}`}>
+                                                {format(parseISO(service.end_date), 'dd/MM/yyyy')}
+                                                {isExpired && <AlertTriangle className="h-4 w-4" />}
+                                            </div>
+                                        )
+                                    })()}
                                 </TableCell>
                                 <TableCell className="text-center">
                                     <div className="flex items-center justify-center space-x-2">

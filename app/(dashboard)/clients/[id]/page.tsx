@@ -7,7 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Mail, Phone, MapPin, Building2, FileText, Globe } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, AlertTriangle } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
 
 export default async function ClientDetailPage({ params }: { params: { id: string } }) {
     const supabase = await createClient()
@@ -32,6 +33,11 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
         .eq('client_id', id)
         .order('end_date', { ascending: true })
 
+    // Check for overdue services
+    const hasOverdueServices = services?.some(service =>
+        service.end_date && new Date(service.end_date) < new Date()
+    )
+
     return (
         <div className="space-y-8">
             {/* Header & Back */}
@@ -43,6 +49,12 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
                 </Button>
                 <div className="flex items-center gap-3">
                     <h1 className="text-3xl font-bold text-white max-w-[600px] truncate">{client.nombre_fiscal}</h1>
+                    {hasOverdueServices && (
+                        <Badge className="bg-red-600 text-white hover:bg-red-700 px-3 py-1 flex items-center gap-2">
+                            <AlertTriangle className="h-4 w-4" />
+                            PAGOS PENDIENTES
+                        </Badge>
+                    )}
                     <ClientActions client={client} />
                 </div>
             </div>
