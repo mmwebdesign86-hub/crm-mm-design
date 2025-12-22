@@ -1,0 +1,46 @@
+'use server'
+
+import { createClient } from '@/lib/supabase/server'
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
+
+export async function createQuoteAction(formData: FormData) {
+    const supabase = await createClient()
+
+    const client_id = formData.get('client_id') as string
+    const date = formData.get('date') as string
+    const notes = formData.get('notes') as string
+    const itemsJson = formData.get('items') as string
+    const total = formData.get('total') as string
+
+    if (!client_id) {
+        return { error: 'Debes seleccionar un cliente' }
+    }
+
+    // Generate Quote Number (Simple Auto-increment logic or Time-based for collision avoidance in MVP)
+    // For a real production app, we might use a sequence or query the max number.
+    // Let's use PRE-YYYYMMDD-XXXX (Full random suffix for MVP speed and safety)
+    const suffix = Math.floor(1000 + Math.random() * 9000)
+    const todayStr = new Date().toISOString().slice(0, 10).replace(/-/g, '')
+    const quote_number = `PRE-${todayStr}-${suffix}`
+
+    const items = JSON.parse(itemsJson)
+
+    const { error } = await supabase.from('quotes').insert({
+        client_id,
+        quote_number,
+        date: date || new Date().toISOString(),
+        status: 'draft',
+        items,
+        notes,
+        total: parseFloat(total)
+    })
+
+    if (error) {
+        console.error('Error creating quote:', error)
+        return { error: 'Error al guardar el presupuesto: ' + error.message }
+    }
+
+    revalidatePath('/quotes')
+    return { success: true }
+}

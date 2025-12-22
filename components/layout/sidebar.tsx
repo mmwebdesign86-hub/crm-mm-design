@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Users, LayoutDashboard } from "lucide-react"
+import { Users, LayoutDashboard, FileText } from "lucide-react"
 import { cn } from "@/lib/utils"
 // import { UserNav } from "@/components/layout/user-nav"
 import { LogoutButton } from "@/components/auth/logout-button"
@@ -18,6 +18,11 @@ const sidebarItems = [
         title: "Clientes",
         href: "/clients",
         icon: Users,
+    },
+    {
+        title: "Presupuestos",
+        href: "/quotes",
+        icon: FileText,
     },
 ]
 
