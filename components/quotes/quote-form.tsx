@@ -195,7 +195,7 @@ export function QuoteForm({ clients }: { clients: any[] }) {
 
                 <div className="w-full md:w-64 space-y-4 bg-[#1a1a1a] p-6 rounded-xl border border-gray-800 flex-shrink-0">
                     <div className="flex justify-between items-center">
-                        <span className="text-gray-400">Base Imponible</span>
+                        <span className="text-gray-400">Subtotal</span>
                         <span className="text-white font-mono">{total.toFixed(2)} €</span>
                     </div>
                     {/* Add VAT logic here if needed, for now just Total */}
