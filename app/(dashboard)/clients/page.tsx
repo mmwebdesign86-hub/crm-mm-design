@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Eye, Building2, User, MapPin, AlertTriangle, CheckCircle2 } from 'lucide-react'
 import { ClientActions } from '@/components/clients/client-actions'
-import { ClientActions } from '@/components/clients/client-actions'
+
 
 export default async function ClientsPage() {
     const supabase = await createClient()
