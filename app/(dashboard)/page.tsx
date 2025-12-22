@@ -97,9 +97,9 @@ export default async function DashboardPage() {
                 {clients.map(({ info, services }) => (
                     <Card key={info.id} className="bg-white text-black shadow-xl border-none overflow-hidden hover:shadow-2xl transition-shadow duration-300 flex flex-col">
 
-                        {/* Header Image & Name */}
-                        <div className="flex flex-col sm:flex-row p-3 gap-2 items-center border-b border-gray-100">
-                            {/* Photo or Placeholder - Larger & Rectangular */}
+                        {/* Header Image & Name - COMPACTED */}
+                        <div className="flex flex-col sm:flex-row p-2 gap-1.5 items-center border-b border-gray-100">
+                            {/* Photo or Placeholder - SIZE PRESERVED */}
                             <div className="h-24 w-48 bg-gray-50 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm border border-gray-200 relative p-2">
                                 {info.image_url ? (
                                     <img
@@ -111,35 +111,35 @@ export default async function DashboardPage() {
                                     <User className="h-10 w-10 text-gray-300" />
                                 )}
                             </div>
-                            <div className="overflow-hidden text-center sm:text-left w-full">
-                                <h2 className="text-xl font-black text-black uppercase leading-tight truncate">
+                            <div className="overflow-hidden text-center sm:text-left w-full px-1">
+                                <h2 className="text-base font-bold text-black uppercase leading-tight truncate">
                                     {info.nombre_fiscal}
                                 </h2>
-                                <p className="text-xs text-gray-500 truncate mt-1">{info.nombre_contacto || 'Sin contacto'}</p>
+                                <p className="text-[10px] text-gray-500 truncate mt-0.5">{info.nombre_contacto || 'Sin contacto'}</p>
                             </div>
                         </div>
 
-                        {/* Body: Service List */}
-                        <CardContent className="p-3 flex-1 space-y-1.5">
+                        {/* Body: Service List - COMPACTED */}
+                        <CardContent className="p-2 flex-1 space-y-1">
                             {services.map((service: any) => {
                                 const endDate = parseISO(service.end_date);
-                                let icon = <CheckCircle className="h-3.5 w-3.5 text-green-600" />;
+                                let icon = <CheckCircle className="h-3 w-3 text-green-600" />;
                                 let dateClass = "text-gray-600";
 
                                 if (isBefore(endDate, today)) {
-                                    icon = <AlertCircle className="h-3.5 w-3.5 text-red-600 font-bold" />;
+                                    icon = <AlertCircle className="h-3 w-3 text-red-600 font-bold" />;
                                     dateClass = "text-red-600 font-bold";
                                 } else if (isBefore(endDate, nextWeek)) {
-                                    icon = <Clock className="h-3.5 w-3.5 text-red-500" />;
+                                    icon = <Clock className="h-3 w-3 text-red-500" />;
                                     dateClass = "text-red-500 font-semibold";
                                 } else if (isBefore(endDate, complexLimit)) {
-                                    icon = <Calendar className="h-3.5 w-3.5 text-yellow-600" />;
+                                    icon = <Calendar className="h-3 w-3 text-yellow-600" />;
                                     dateClass = "text-yellow-600";
                                 }
 
                                 return (
-                                    <div key={service.id} className="flex items-center justify-between text-xs group/item">
-                                        <div className="flex items-center gap-2 overflow-hidden">
+                                    <div key={service.id} className="flex items-center justify-between text-[10px] group/item">
+                                        <div className="flex items-center gap-1.5 overflow-hidden">
                                             {icon}
                                             <span className="truncate font-medium text-gray-800" title={service.description || service.type}>
                                                 {service.description || service.type}
@@ -153,14 +153,14 @@ export default async function DashboardPage() {
                             })}
                         </CardContent>
 
-                        {/* Footer Button Turbo */}
+                        {/* Footer Button Turbo - COMPACTED */}
                         <CardFooter className="p-0 mt-auto">
                             <Button
-                                className="w-full rounded-none h-12 bg-red-600 hover:bg-red-700 text-white font-bold text-lg tracking-wide shadow-inner"
+                                className="w-full rounded-none h-9 bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wide shadow-inner"
                                 asChild
                             >
                                 <Link href={`/clients/${info.id}`}>
-                                    IR A FICHA CLIENTE 🚀
+                                    IR A FICHA 🚀
                                 </Link>
                             </Button>
                         </CardFooter>
