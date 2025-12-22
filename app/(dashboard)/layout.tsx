@@ -37,14 +37,14 @@ export default async function DashboardLayout({
                 {/* Global Header */}
                 <header className="flex-shrink-0 h-16 flex items-center justify-end px-6 border-b border-gray-800 bg-[#0a0a0a]">
                     <Link
-                        href="/clients"
+                        href="/clients?filter=overdue"
                         className="relative p-2 rounded-full hover:bg-gray-800 transition-colors group"
                         title="Ver alertas de servicio"
                     >
                         <Bell className={`h-6 w-6 ${overdueCount && overdueCount > 0 ? 'text-gray-200' : 'text-gray-500'} group-hover:text-white transition-colors`} />
 
                         {overdueCount && overdueCount > 0 ? (
-                            <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white shadow-sm animate-pulse">
+                            <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white shadow-sm">
                                 {overdueCount}
                             </span>
                         ) : null}

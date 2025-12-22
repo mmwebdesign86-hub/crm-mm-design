@@ -7,12 +7,29 @@ import { Eye, Building2, User, MapPin, AlertTriangle, CheckCircle2 } from 'lucid
 import { ClientActions } from '@/components/clients/client-actions'
 
 
-export default async function ClientsPage() {
+export default async function ClientsPage({
+    searchParams,
+}: {
+    searchParams: { [key: string]: string | string[] | undefined }
+}) {
     const supabase = await createClient()
-    const { data: clients } = await supabase
+    const { data: clientsRaw } = await supabase
         .from('clients')
         .select('*, services(end_date)')
         .order('created_at', { ascending: false })
+
+    // Handle Search Params
+    const filter = searchParams.filter
+    const showOnlyOverdue = filter === 'overdue'
+
+    // Filter Logic
+    const clients = showOnlyOverdue
+        ? clientsRaw?.filter(client =>
+            client.services?.some((service: any) =>
+                service.end_date && new Date(service.end_date) < new Date()
+            )
+        )
+        : clientsRaw
 
     return (
         <div className="space-y-6">
@@ -21,13 +38,24 @@ export default async function ClientsPage() {
                     <h2 className="text-3xl font-bold tracking-tight text-white">Gestión de Clientes</h2>
                     <p className="text-muted-foreground">Administra tu cartera y consulta el estado de cada cuenta.</p>
                 </div>
-                <ClientDialog />
+                <div className="flex items-center gap-3">
+                    {showOnlyOverdue && (
+                        <Button variant="outline" asChild className="border-red-600 text-red-500 hover:bg-red-950 hover:text-red-400">
+                            <Link href="/clients" className="flex items-center gap-2">
+                                🔄 MOSTRAR TODOS
+                            </Link>
+                        </Button>
+                    )}
+                    <ClientDialog />
+                </div>
             </div>
 
             <div className="space-y-4">
                 {clients?.length === 0 ? (
                     <div className="text-center py-12 border border-[#333] rounded-md text-gray-500">
-                        No hay clientes registrados.
+                        {showOnlyOverdue
+                            ? "¡Todo en orden! No hay clientes con pagos pendientes."
+                            : "No hay clientes registrados."}
                     </div>
                 ) : (
                     clients?.map((client) => {
