@@ -13,21 +13,61 @@ interface QuotePDFButtonProps {
 
 export function QuotePDFButton({ quote, client }: QuotePDFButtonProps) {
 
-    const generatePDF = () => {
+    const generatePDF = async () => {
         const doc = new jsPDF()
 
         // --- COMPANY LOGO & INFO ---
-        // Logo - DRAWN FALLBACK (Red Box with White Text) to avoid CORS/Load issues
-        doc.setFillColor(220, 38, 38) // MM Red
-        doc.rect(15, 15, 50, 20, 'F')
-        doc.setTextColor(255, 255, 255)
-        doc.setFontSize(14)
-        doc.setFont('helvetica', 'bold')
-        doc.text('MM DESIGN', 40, 23, { align: 'center' })
-        doc.text('WEB', 40, 30, { align: 'center' })
-        doc.setTextColor(0, 0, 0) // Reset to black
+        const logoUrl = 'https://files.cdn-files-a.com/uploads/9284533/normal_694957bcd697a.png'
 
-        // Mario's Info (Right aligned)
+        try {
+            // 1. Fetch Logo Blob (Attempt to bypass basic CORS or use cache)
+            const response = await fetch(logoUrl, { mode: 'no-cors' }) // Try no-cors first or standard
+            // Note: 'no-cors' returns opaque response not usable for blob usually.
+            // Let's try standard fetch. If it fails, we go to text.
+            // Actually, for jsPDF addImage to work with URL, it needs to be accessible.
+            // Better approach: Try to fetch blob. If fails, text.
+
+            // Re-attempt with standard fetch (if server supports CORS)
+            const realResponse = await fetch(logoUrl)
+            if (!realResponse.ok) throw new Error('Network response was not ok')
+            const blob = await realResponse.blob()
+
+            // Convert to Base64
+            const reader = new FileReader()
+            reader.readAsDataURL(blob)
+            reader.onloadend = () => {
+                const base64data = reader.result as string
+                if (base64data) {
+                    doc.addImage(base64data, 'PNG', 15, 10, 50, 40) // Adjusted Logo size/pos
+                    continuePDFGeneration(doc)
+                }
+            }
+            reader.onerror = () => {
+                throw new Error('FileReader error')
+            }
+
+        } catch (error) {
+            console.warn('Logo load failed, using Text Fallback:', error)
+            // FALLBACK: TEXT "MM DESIGN WEB"
+            doc.setTextColor(220, 38, 38) // MM Red
+            doc.setFontSize(22) // Impact Size
+            doc.setFont('helvetica', 'bold')
+            doc.text('MM DESIGN WEB', 15, 25)
+
+            doc.setTextColor(50, 50, 50) // Gray
+            doc.setFontSize(10)
+            doc.setFont('helvetica', 'normal')
+            doc.text('WEB & SEO STUDIO', 15, 32) // Spacing
+
+            continuePDFGeneration(doc)
+        }
+    }
+
+    const continuePDFGeneration = (doc: jsPDF) => {
+        // --- REST OF PDF GENERATION ---
+
+        // Mario's Info (Right aligned) - Same as before
+        doc.setTextColor(0, 0, 0)
         doc.setFontSize(10)
         doc.setFont('helvetica', 'bold')
         doc.text('MM DESIGN WEB', 195, 20, { align: 'right' })
@@ -89,16 +129,16 @@ export function QuotePDFButton({ quote, client }: QuotePDFButtonProps) {
                 halign: 'left'
             },
             columnStyles: {
-                0: { cellWidth: 35, fontStyle: 'bold' }, // ~20% of 180 printable width
-                1: { cellWidth: 'auto' }, // ~60% (Auto fills remaining)
-                2: { cellWidth: 35, halign: 'right' } // ~20%
+                0: { cellWidth: 35, fontStyle: 'bold' },
+                1: { cellWidth: 'auto' },
+                2: { cellWidth: 35, halign: 'right' }
             },
             styles: {
                 fontSize: 10,
                 cellPadding: 3,
-                overflow: 'linebreak', // Wrap text
+                overflow: 'linebreak',
                 valign: 'top',
-                textColor: [50, 50, 50] // Dark Gray
+                textColor: [50, 50, 50]
             },
             didDrawPage: (data) => {
                 // Footer helper if needed
