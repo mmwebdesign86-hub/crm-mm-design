@@ -54,45 +54,83 @@ export function ClientDialog() {
                         </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
+                        {/* 1. FOTO (Grande y Rectangular) */}
+                        <div className="space-y-2">
+                            <Label htmlFor="logo">Logo / Foto Empresa</Label>
+                            <div className="flex items-center gap-4">
+                                <div className="h-24 w-48 bg-[#2a2a2a] border border-dashed border-gray-600 rounded-lg flex items-center justify-center overflow-hidden">
+                                    {/* This is a placeholder visual since we can't preview the file immediately without JS complexity, 
+                                         but the input below handles the file. We make the input wide to match req. */}
+                                    <span className="text-gray-500 text-xs text-center px-2">Subir Imagen<br />(Formato Panorámico)</span>
+                                </div>
+                                <Input id="logo" name="logo" type="file" accept="image/*" className="flex-1 bg-[#2a2a2a] border-gray-700 text-gray-400 file:text-white file:bg-gray-800 file:border-0 file:rounded-md file:px-2 file:mr-2 hover:file:bg-gray-700" />
+                            </div>
+                        </div>
+
+                        {/* 2. DATOS PRINCIPALES */}
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <Label htmlFor="logo">Logo Empresa</Label>
-                                <Input id="logo" name="logo" type="file" accept="image/*" className="bg-[#2a2a2a] border-gray-700 text-gray-400 file:text-white file:bg-gray-800 file:border-0 file:rounded-md file:px-2 file:mr-2 hover:file:bg-gray-700" />
+                                <Label htmlFor="trade_name" className="text-red-400 font-bold">Nombre Comercial *</Label>
+                                <Input id="trade_name" name="trade_name" required placeholder="Ej: Talleres Pepe" className="bg-[#2a2a2a] border-gray-700 font-semibold" />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="company_name">Empresa / Nombre *</Label>
-                                <Input id="company_name" name="company_name" required className="bg-[#2a2a2a] border-gray-700" />
+                                <Label htmlFor="company_name">Razón Social (Fiscal) *</Label>
+                                <Input id="company_name" name="company_name" required placeholder="Ej: Talleres Pepe S.L." className="bg-[#2a2a2a] border-gray-700" />
                             </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="nif_cif">NIF / CIF</Label>
                                 <Input id="nif_cif" name="nif_cif" className="bg-[#2a2a2a] border-gray-700" />
                             </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="contact_name">Persona de Contacto</Label>
+                                <Input id="contact_name" name="contact_name" className="bg-[#2a2a2a] border-gray-700" />
+                            </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <Label htmlFor="fiscal_name">Razón Social</Label>
-                            <Input id="fiscal_name" name="fiscal_name" className="bg-[#2a2a2a] border-gray-700" />
+                        {/* 3. CONTACTO */}
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="contact_phone">Teléfono Fijo</Label>
+                                <Input id="contact_phone" name="contact_phone" className="bg-[#2a2a2a] border-gray-700" />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="mobile_phone">Móvil</Label>
+                                <Input id="mobile_phone" name="mobile_phone" className="bg-[#2a2a2a] border-gray-700" />
+                            </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <Label htmlFor="contact_email">Email Contacto *</Label>
+                                <Label htmlFor="contact_email">Email *</Label>
                                 <Input id="contact_email" name="contact_email" type="email" required className="bg-[#2a2a2a] border-gray-700" />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="contact_phone">Teléfono</Label>
-                                <Input id="contact_phone" name="contact_phone" className="bg-[#2a2a2a] border-gray-700" />
+                                <Label htmlFor="website_url">Sitio Web</Label>
+                                <Input id="website_url" name="website_url" placeholder="https://" className="bg-[#2a2a2a] border-gray-700" />
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        {/* 4. DIRECCIÓN */}
+                        <div className="space-y-2">
+                            <Label htmlFor="address">Dirección Completa</Label>
+                            <Input id="address" name="address" className="bg-[#2a2a2a] border-gray-700" />
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-4">
                             <div className="space-y-2">
-                                <Label htmlFor="address">Dirección</Label>
-                                <Input id="address" name="address" className="bg-[#2a2a2a] border-gray-700" />
+                                <Label htmlFor="city">Población</Label>
+                                <Input id="city" name="city" className="bg-[#2a2a2a] border-gray-700" />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="city">Ciudad</Label>
-                                <Input id="city" name="city" className="bg-[#2a2a2a] border-gray-700" />
+                                <Label htmlFor="province">Provincia</Label>
+                                <Input id="province" name="province" className="bg-[#2a2a2a] border-gray-700" />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="postal_code">C. Postal</Label>
+                                <Input id="postal_code" name="postal_code" className="bg-[#2a2a2a] border-gray-700" />
                             </div>
                         </div>
 

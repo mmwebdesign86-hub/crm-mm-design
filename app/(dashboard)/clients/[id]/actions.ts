@@ -56,6 +56,11 @@ export async function updateClientAction(formData: FormData) {
     const nombre_contacto = formData.get('nombre_contacto') as string
     const notas = formData.get('notas') as string
 
+    const trade_name = formData.get('trade_name') as string
+    const mobile_phone = formData.get('mobile_phone') as string
+    const website_url = formData.get('website_url') as string
+    const province = formData.get('province') as string
+
     // Simple validation
     if (!id || !nombre_fiscal || !email_contacto) {
         return { error: 'ID, Nombre Fiscal y Email son obligatorios' }
@@ -82,13 +87,17 @@ export async function updateClientAction(formData: FormData) {
 
     const updatedClient: Database['public']['Tables']['clients']['Update'] = {
         nombre_fiscal,
+        trade_name: trade_name || null,
         cif_nif: cif_nif || null,
         direccion: direccion || null,
         poblacion: poblacion || null,
+        province: province || null,
         codigo_postal: codigo_postal || null,
         telefono: telefono || null,
+        mobile_phone: mobile_phone || null,
         email_contacto,
         nombre_contacto: nombre_contacto || null,
+        website_url: website_url || null,
         notas: notas || null,
         ...(image_url && { image_url }) // Only update if new image uploaded
     } as any

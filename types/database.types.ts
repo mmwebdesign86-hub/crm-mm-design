@@ -23,6 +23,10 @@ export interface Database {
                     telefono: string | null
                     notas: string | null
                     image_url: string | null
+                    trade_name: string | null
+                    mobile_phone: string | null
+                    website_url: string | null
+                    province: string | null
                 }
                 Insert: {
                     id?: string
@@ -37,6 +41,10 @@ export interface Database {
                     telefono?: string | null
                     notas?: string | null
                     image_url?: string | null
+                    trade_name?: string | null
+                    mobile_phone?: string | null
+                    website_url?: string | null
+                    province?: string | null
                 }
                 Update: {
                     id?: string
@@ -51,6 +59,10 @@ export interface Database {
                     telefono?: string | null
                     notas?: string | null
                     image_url?: string | null
+                    trade_name?: string | null
+                    mobile_phone?: string | null
+                    website_url?: string | null
+                    province?: string | null
                 }
                 Relationships: []
             }

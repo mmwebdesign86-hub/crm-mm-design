@@ -20,6 +20,11 @@ export async function createClientAction(formData: FormData) {
     const contact_phone = formData.get('contact_phone') as string
     const notes = formData.get('notes') as string
 
+    const trade_name = formData.get('trade_name') as string
+    const mobile_phone = formData.get('mobile_phone') as string
+    const website_url = formData.get('website_url') as string
+    const province = formData.get('province') as string
+
     // Simple validation
     if (!company_name || !contact_email) {
         return { error: 'Nombre de empresa y email de contacto son obligatorios' }
@@ -52,13 +57,17 @@ export async function createClientAction(formData: FormData) {
 
     const newClient: Database['public']['Tables']['clients']['Insert'] = {
         nombre_fiscal: company_name,
+        trade_name: trade_name || null,
         cif_nif: nif_cif || null,
         direccion: address || null,
         poblacion: city || null,
+        province: province || null,
         codigo_postal: postal_code || null,
         nombre_contacto: contact_name || null,
         email_contacto: contact_email,
         telefono: contact_phone || null,
+        mobile_phone: mobile_phone || null,
+        website_url: website_url || null,
         notas: notes || null,
         image_url: image_url
     } as any
