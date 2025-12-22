@@ -112,10 +112,10 @@ export default async function DashboardPage() {
                                 )}
                             </div>
                             <div className="overflow-hidden text-center sm:text-left w-full px-1">
-                                <h2 className="text-base font-bold text-black uppercase leading-tight truncate">
+                                <h2 className="text-lg font-bold text-black uppercase leading-tight truncate">
                                     {info.nombre_fiscal}
                                 </h2>
-                                <p className="text-[10px] text-gray-500 truncate mt-0.5">{info.nombre_contacto || 'Sin contacto'}</p>
+                                <p className="text-sm text-gray-500 truncate mt-0.5">{info.nombre_contacto || 'Sin contacto'}</p>
                             </div>
                         </div>
 
@@ -123,22 +123,22 @@ export default async function DashboardPage() {
                         <CardContent className="p-2 flex-1 space-y-1">
                             {services.map((service: any) => {
                                 const endDate = parseISO(service.end_date);
-                                let icon = <CheckCircle className="h-3 w-3 text-green-600" />;
+                                let icon = <CheckCircle className="h-4 w-4 text-green-600" />;
                                 let dateClass = "text-gray-600";
 
                                 if (isBefore(endDate, today)) {
-                                    icon = <AlertCircle className="h-3 w-3 text-red-600 font-bold" />;
+                                    icon = <AlertCircle className="h-4 w-4 text-red-600 font-bold" />;
                                     dateClass = "text-red-600 font-bold";
                                 } else if (isBefore(endDate, nextWeek)) {
-                                    icon = <Clock className="h-3 w-3 text-red-500" />;
+                                    icon = <Clock className="h-4 w-4 text-red-500" />;
                                     dateClass = "text-red-500 font-semibold";
                                 } else if (isBefore(endDate, complexLimit)) {
-                                    icon = <Calendar className="h-3 w-3 text-yellow-600" />;
+                                    icon = <Calendar className="h-4 w-4 text-yellow-600" />;
                                     dateClass = "text-yellow-600";
                                 }
 
                                 return (
-                                    <div key={service.id} className="flex items-center justify-between text-[10px] group/item">
+                                    <div key={service.id} className="flex items-center justify-between text-sm group/item">
                                         <div className="flex items-center gap-1.5 overflow-hidden">
                                             {icon}
                                             <span className="truncate font-medium text-gray-800" title={service.description || service.type}>
