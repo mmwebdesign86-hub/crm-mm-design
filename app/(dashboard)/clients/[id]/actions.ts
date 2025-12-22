@@ -43,79 +43,88 @@ export async function createServiceAction(formData: FormData) {
 }
 
 export async function updateClientAction(formData: FormData) {
-    const supabase = await createClient()
+    try {
+        const supabase = await createClient()
 
-    const id = formData.get('id') as string
-    const nombre_fiscal = formData.get('nombre_fiscal') as string
-    const cif_nif = formData.get('cif_nif') as string
-    const direccion = formData.get('direccion') as string
-    const poblacion = formData.get('poblacion') as string
-    const codigo_postal = formData.get('codigo_postal') as string
-    const telefono = formData.get('telefono') as string
-    const email_contacto = formData.get('email_contacto') as string
-    const nombre_contacto = formData.get('nombre_contacto') as string
-    const notas = formData.get('notas') as string
+        const id = formData.get('id') as string
+        const nombre_fiscal = formData.get('nombre_fiscal') as string
+        const cif_nif = formData.get('cif_nif') as string
+        const direccion = formData.get('direccion') as string
+        const poblacion = formData.get('poblacion') as string
+        const codigo_postal = formData.get('codigo_postal') as string
+        const telefono = formData.get('telefono') as string
+        const email_contacto = formData.get('email_contacto') as string
+        const nombre_contacto = formData.get('nombre_contacto') as string
+        const notas = formData.get('notas') as string
 
-    const trade_name = formData.get('trade_name') as string
-    const mobile_phone = formData.get('mobile_phone') as string
-    // Extract all website URLs and filter out empty ones
-    const website_urls_raw = formData.getAll('website_urls')
-    const website_urls = website_urls_raw.map(url => url.toString()).filter(url => url.trim() !== '')
-    const province = formData.get('province') as string
+        const trade_name = formData.get('trade_name') as string
+        const mobile_phone = formData.get('mobile_phone') as string
 
-    // Simple validation
-    if (!id || !nombre_fiscal || !email_contacto) {
-        return { error: 'ID, Nombre Fiscal y Email son obligatorios' }
-    }
+        // Extract all website URLs and filter out empty ones
+        const website_urls_raw = formData.getAll('website_urls')
+        const website_urls = website_urls_raw
+            .map(url => url.toString().trim())
+            .filter(url => url !== '')
 
-    let image_url: string | undefined = undefined
-    const logoFile = formData.get('logo') as File
+        const province = formData.get('province') as string
 
-    if (logoFile && logoFile.size > 0) {
-        const fileName = `${Date.now()}_${logoFile.name.replace(/\s+/g, '-')}`
-        const { data: uploadData, error: uploadError } = await supabase.storage
-            .from('clients-logos')
-            .upload(fileName, logoFile)
-
-        if (uploadError) {
-            console.error('Error uploading logo (update):', uploadError)
-        } else {
-            const { data: { publicUrl } } = supabase.storage
-                .from('clients-logos')
-                .getPublicUrl(uploadData.path)
-            image_url = publicUrl
+        // Simple validation
+        if (!id || !nombre_fiscal || !email_contacto) {
+            return { error: 'ID, Nombre Fiscal y Email son obligatorios' }
         }
+
+        let image_url: string | undefined = undefined
+        const logoFile = formData.get('logo') as File
+
+        if (logoFile && logoFile.size > 0) {
+            const fileName = `${Date.now()}_${logoFile.name.replace(/\s+/g, '-')}`
+            const { data: uploadData, error: uploadError } = await supabase.storage
+                .from('clients-logos')
+                .upload(fileName, logoFile)
+
+            if (uploadError) {
+                console.error('Error uploading logo (update):', uploadError)
+            } else {
+                const { data: { publicUrl } } = supabase.storage
+                    .from('clients-logos')
+                    .getPublicUrl(uploadData.path)
+                image_url = publicUrl
+            }
+        }
+
+        const updatedClient: Database['public']['Tables']['clients']['Update'] = {
+            nombre_fiscal,
+            trade_name: trade_name || null,
+            cif_nif: cif_nif || null,
+            direccion: direccion || null,
+            poblacion: poblacion || null,
+            province: province || null,
+            codigo_postal: codigo_postal || null,
+            telefono: telefono || null,
+            mobile_phone: mobile_phone || null,
+            email_contacto,
+            nombre_contacto: nombre_contacto || null,
+            website_urls: website_urls.length > 0 ? website_urls : null,
+            notas: notas || null,
+            ...(image_url && { image_url }) // Only update if new image uploaded
+        } as any
+
+        const { error } = await supabase
+            .from('clients')
+            .update(updatedClient)
+            .eq('id', id)
+
+        if (error) {
+            console.error('Error updating client:', error)
+            return { error: `Error al actualizar: ${error.message}` }
+        }
+
+        revalidatePath('/clients')
+        return { success: true }
+    } catch (e) {
+        console.error('Unexpected error in updateClientAction:', e)
+        return { error: 'Ocurrió un error inesperado al actualizar el cliente.' }
     }
-
-    const updatedClient: Database['public']['Tables']['clients']['Update'] = {
-        nombre_fiscal,
-        trade_name: trade_name || null,
-        cif_nif: cif_nif || null,
-        direccion: direccion || null,
-        poblacion: poblacion || null,
-        province: province || null,
-        codigo_postal: codigo_postal || null,
-        telefono: telefono || null,
-        mobile_phone: mobile_phone || null,
-        email_contacto,
-        nombre_contacto: nombre_contacto || null,
-        website_urls: website_urls.length > 0 ? website_urls : null,
-        notas: notas || null,
-        ...(image_url && { image_url }) // Only update if new image uploaded
-    } as any
-
-    const { error } = await supabase
-        .from('clients')
-        .update(updatedClient)
-        .eq('id', id)
-
-    if (error) {
-        console.error('Error updating client:', error)
-        return { error: `Error al actualizar: ${error.message}` }
-    }
-
-    revalidatePath('/clients')
-    return { success: true }
 }
 
 export async function updateServiceAction(formData: FormData) {
