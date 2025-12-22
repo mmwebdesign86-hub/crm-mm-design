@@ -63,7 +63,12 @@ export function QuoteForm({ clients }: { clients: any[] }) {
             alert(result.error)
             setIsLoading(false)
         } else {
-            router.push('/quotes')
+            // Redirect to the new Quote Detail Page
+            if (result?.id) {
+                router.push(`/quotes/${result.id}`)
+            } else {
+                router.push('/quotes')
+            }
             router.refresh()
         }
     }
@@ -137,36 +142,36 @@ export function QuoteForm({ clients }: { clients: any[] }) {
                             <div className="grid sm:grid-cols-12 gap-4">
                                 {/* Concept */}
                                 <div className="sm:col-span-8 space-y-2">
-                                    <Label className="text-xs text-gray-400">Concepto Corto</Label>
+                                    <Label className="text-white font-medium">Concepto Corto</Label>
                                     <Input
                                         placeholder="Ej: Diseño Web Corporativo"
                                         value={item.concept}
                                         onChange={(e) => updateItem(index, 'concept', e.target.value)}
-                                        className="bg-[#2a2a2a] border-gray-700 text-white focus:border-red-600"
+                                        className="bg-[#2a2a2a] border-gray-600 text-white placeholder-gray-500 focus:border-red-600 focus:ring-1 focus:ring-red-600"
                                         required
                                     />
                                 </div>
                                 {/* Price */}
                                 <div className="sm:col-span-4 space-y-2">
-                                    <Label className="text-xs text-gray-400">Precio (€)</Label>
+                                    <Label className="text-white font-medium">Precio (€)</Label>
                                     <Input
                                         type="number"
                                         placeholder="0.00"
                                         value={item.price}
                                         onChange={(e) => updateItem(index, 'price', parseFloat(e.target.value))}
-                                        className="bg-[#2a2a2a] border-gray-700 text-white font-mono text-right focus:border-red-600"
+                                        className="bg-[#2a2a2a] border-gray-600 text-white font-mono text-right focus:border-red-600 focus:ring-1 focus:ring-red-600"
                                     />
                                 </div>
                             </div>
 
                             {/* Description (Textarea) */}
                             <div className="space-y-2">
-                                <Label className="text-xs text-gray-400">Descripción Detallada (IA Friendly)</Label>
+                                <Label className="text-white font-medium">Descripción Detallada (IA Friendly)</Label>
                                 <Textarea
                                     placeholder="Detalles del servicio..."
                                     value={item.description}
                                     onChange={(e) => updateItem(index, 'description', e.target.value)}
-                                    className="bg-[#2a2a2a] border-gray-700 text-white min-h-[100px] focus:border-red-600"
+                                    className="bg-[#2a2a2a] border-gray-600 text-white min-h-[100px] focus:border-red-600 focus:ring-1 focus:ring-red-600 resize-y"
                                 />
                             </div>
                         </div>

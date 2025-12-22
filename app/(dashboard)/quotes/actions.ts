@@ -26,7 +26,7 @@ export async function createQuoteAction(formData: FormData) {
 
     const items = JSON.parse(itemsJson)
 
-    const { error } = await supabase.from('quotes').insert({
+    const { data, error } = await supabase.from('quotes').insert({
         client_id,
         quote_number,
         date: date || new Date().toISOString(),
@@ -34,7 +34,7 @@ export async function createQuoteAction(formData: FormData) {
         items,
         notes,
         total: parseFloat(total)
-    })
+    }).select('id').single()
 
     if (error) {
         console.error('Error creating quote:', error)
@@ -42,5 +42,5 @@ export async function createQuoteAction(formData: FormData) {
     }
 
     revalidatePath('/quotes')
-    return { success: true }
+    return { success: true, id: data.id }
 }
