@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge'
 import { QuotePDFButton } from '@/components/quotes/quote-pdf-button'
 
 import { ClientExportButton } from '@/components/clients/client-export-button'
+import { QuoteDeleteButton } from '@/components/quotes/quote-delete-button'
 
 export default async function ClientDetailPage({ params }: { params: { id: string } }) {
     const supabase = await createClient()
@@ -178,11 +179,44 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
 
                 {/* Embedded Quote List (Simplified) */}
                 <div className="grid gap-4">
-                    {/* We need to fetch quotes here. For MVP, we'll just fetch them in the main component. 
-                        Wait, I can't edit the component props easily to pass quotes without fetching them above.
-                        Let's fetch them in step 2.
-                     */}
-                    {/* Placeholder for now logic is effectively implemented by fetching them. */}
+                    {quotes?.length === 0 ? (
+                        <div className="text-center py-8 border border-gray-800 rounded-lg text-gray-500 text-sm">
+                            No hay presupuestos emitidos para este cliente.
+                        </div>
+                    ) : (
+                        quotes?.map((quote) => (
+                            <div key={quote.id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div className="flex items-center gap-4 w-full sm:w-auto">
+                                    <div className="h-10 w-10 rounded-md bg-red-50 flex items-center justify-center border border-red-100 flex-shrink-0">
+                                        <FileText className="h-5 w-5 text-red-600" />
+                                    </div>
+                                    <div>
+                                        <div className="flex items-center gap-2 mb-0.5">
+                                            <span className="font-bold text-gray-900">{quote.quote_number}</span>
+                                            {/* Minimal Status Badge */}
+                                            <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full border ${quote.status === 'accepted' ? 'bg-green-50 text-green-700 border-green-200' :
+                                                quote.status === 'rejected' ? 'bg-red-50 text-red-700 border-red-200' :
+                                                    quote.status === 'sent' ? 'bg-blue-50 text-blue-700 border-blue-200' :
+                                                        'bg-gray-100 text-gray-600 border-gray-200'
+                                                }`}>
+                                                {quote.status === 'draft' ? 'Borrador' : quote.status}
+                                            </span>
+                                        </div>
+                                        <div className="text-xs text-gray-500">
+                                            {new Date(quote.date).toLocaleDateString()} · <span className="font-medium text-gray-900">{Number(quote.total).toFixed(2)}€</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                                    <QuotePDFButton quote={quote} client={client} />
+                                    {/* Delete Button */}
+                                    {/* To use standard button logic, we import it. Needs QuoteDeleteButton component */}
+                                    <QuoteDeleteButton id={quote.id} />
+                                </div>
+                            </div>
+                        ))
+                    )}
                 </div>
             </div>
         </div>

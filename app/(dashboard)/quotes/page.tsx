@@ -6,6 +6,7 @@ import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { Badge } from '@/components/ui/badge'
 import { QuotePDFButton } from '@/components/quotes/quote-pdf-button'
+import { QuoteDeleteButton } from '@/components/quotes/quote-delete-button'
 
 export default async function QuotesPage() {
     const supabase = await createClient()

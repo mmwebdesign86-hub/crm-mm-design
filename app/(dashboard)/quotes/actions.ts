@@ -44,3 +44,25 @@ export async function createQuoteAction(formData: FormData) {
     revalidatePath('/quotes')
     return { success: true, id: data.id }
 }
+
+export async function deleteQuoteAction(id: string) {
+    const supabase = await createClient()
+
+    const { error } = await supabase
+        .from('quotes')
+        .delete()
+        .eq('id', id)
+
+    if (error) {
+        console.error('Error deleting quote:', error)
+        return { error: 'Error al eliminar el presupuesto: ' + error.message }
+    }
+
+    revalidatePath('/quotes')
+    // We might also want to revalidate the client page if possible, but path dependent.
+    // Ideally we revalidate everything or specific paths.
+    revalidatePath('/clients')
+    revalidatePath('/', 'layout') // Nuclear option to ensure updates everywhere
+
+    return { success: true }
+}
