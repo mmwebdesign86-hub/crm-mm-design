@@ -10,6 +10,8 @@ import Link from 'next/link'
 import { ArrowLeft, AlertTriangle } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 
+import { ClientExportButton } from '@/components/clients/client-export-button'
+
 export default async function ClientDetailPage({ params }: { params: { id: string } }) {
     const supabase = await createClient()
 
@@ -55,7 +57,10 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
                             PAGOS PENDIENTES
                         </Badge>
                     )}
-                    <ClientActions client={client} />
+                    <div className="ml-auto flex items-center gap-2">
+                        <ClientExportButton client={client} services={services || []} />
+                        <ClientActions client={client} />
+                    </div>
                 </div>
             </div>
 
