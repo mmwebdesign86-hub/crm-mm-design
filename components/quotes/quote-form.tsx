@@ -92,12 +92,12 @@ export function QuoteForm({ clients }: { clients: any[] }) {
                 <div className="space-y-2">
                     <Label className="text-white">Cliente</Label>
                     <Select onValueChange={setClientId} value={clientId} required>
-                        <SelectTrigger className="bg-white text-black">
+                        <SelectTrigger className="w-full bg-[#2a2a2a] border-gray-600 text-white">
                             <SelectValue placeholder="Seleccionar Cliente..." />
                         </SelectTrigger>
-                        <SelectContent className="bg-white text-black">
+                        <SelectContent className="bg-[#1a1a1a] border-gray-700 text-white">
                             {clients.map((client) => (
-                                <SelectItem key={client.id} value={client.id}>
+                                <SelectItem key={client.id} value={client.id} className="text-white hover:bg-[#333] focus:bg-[#333]">
                                     {client.trade_name || client.nombre_fiscal}
                                 </SelectItem>
                             ))}
