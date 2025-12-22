@@ -179,8 +179,21 @@ export function QuotePDFButton({ quote, client }: QuotePDFButtonProps) {
         window.location.href = `mailto:${client.email_contacto}?subject=${subject}&body=${body}`
     }
 
+    const handlePrint = () => {
+        window.print()
+    }
+
     return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 print:hidden">
+            <Button
+                variant="outline"
+                size="sm"
+                onClick={handlePrint}
+                className="text-gray-600 border-gray-200 hover:bg-gray-50"
+                title="Imprimir"
+            >
+                🖨️ Imprimir
+            </Button>
             <Button
                 variant="outline"
                 size="sm"
