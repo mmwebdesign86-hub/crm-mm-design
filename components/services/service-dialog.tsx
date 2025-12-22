@@ -64,15 +64,19 @@ export function ServiceDialog({ clientId }: { clientId: string }) {
                     <div className="grid gap-4 py-4">
                         <div className="space-y-2">
                             <Label htmlFor="type">Tipo de Servicio *</Label>
+                            import {SERVICE_TYPES} from '@/lib/constants'
+
+                            // ... (in component)
                             <Select name="type" required>
                                 <SelectTrigger className="bg-[#2a2a2a] border-gray-700">
                                     <SelectValue placeholder="Selecciona..." />
                                 </SelectTrigger>
                                 <SelectContent className="bg-[#2a2a2a] border-gray-700 text-white">
-                                    <SelectItem value="SEO">SEO Mensual</SelectItem>
-                                    <SelectItem value="WEB">Diseño Web</SelectItem>
-                                    <SelectItem value="HOSTING">Hosting y Dominio</SelectItem>
-                                    <SelectItem value="MANTENIMIENTO">Mantenimiento Web</SelectItem>
+                                    {SERVICE_TYPES.map((service) => (
+                                        <SelectItem key={service.value} value={service.value}>
+                                            {service.label}
+                                        </SelectItem>
+                                    ))}
                                 </SelectContent>
                             </Select>
                         </div>
