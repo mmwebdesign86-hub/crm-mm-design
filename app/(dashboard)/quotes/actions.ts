@@ -81,6 +81,7 @@ export async function updateQuoteStatusAction(id: string, status: string) {
     }
 
     revalidatePath('/quotes')
+    revalidatePath('/', 'layout') // Ensure Client Detail pages are updated
     return { success: true }
 }
 
@@ -93,7 +94,7 @@ export async function updateQuoteAction(formData: FormData) {
     const notes = formData.get('notes') as string
     const itemsJson = formData.get('items') as string
     const total = formData.get('total') as string
-    
+
     // Validate inputs
     if (!id) return { error: 'ID de presupuesto no encontrado' }
     if (!client_id) return { error: 'Debes seleccionar un cliente' }
@@ -118,5 +119,6 @@ export async function updateQuoteAction(formData: FormData) {
 
     revalidatePath('/quotes')
     revalidatePath(`/quotes/${id}`)
+    revalidatePath('/', 'layout') // Ensure Client Detail pages are updated
     return { success: true, id }
 }

@@ -13,6 +13,7 @@ import { QuotePDFButton } from '@/components/quotes/quote-pdf-button'
 
 import { ClientExportButton } from '@/components/clients/client-export-button'
 import { QuoteDeleteButton } from '@/components/quotes/quote-delete-button'
+import { QuoteStatusToggle } from '@/components/quotes/quote-status-toggle'
 
 export default async function ClientDetailPage({ params }: { params: { id: string } }) {
     const supabase = await createClient()
@@ -191,16 +192,10 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
                                         <FileText className="h-5 w-5 text-red-600" />
                                     </div>
                                     <div>
-                                        <div className="flex items-center gap-2 mb-0.5">
+                                        <div className="flex items-center gap-3 mb-0.5">
                                             <span className="font-bold text-gray-900">{quote.quote_number}</span>
-                                            {/* Minimal Status Badge */}
-                                            <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full border ${quote.status === 'accepted' ? 'bg-green-50 text-green-700 border-green-200' :
-                                                quote.status === 'rejected' ? 'bg-red-50 text-red-700 border-red-200' :
-                                                    quote.status === 'sent' ? 'bg-blue-50 text-blue-700 border-blue-200' :
-                                                        'bg-gray-100 text-gray-600 border-gray-200'
-                                                }`}>
-                                                {quote.status === 'draft' ? 'Borrador' : quote.status}
-                                            </span>
+                                            {/* Interactive Status Toggle */}
+                                            <QuoteStatusToggle id={quote.id} initialStatus={quote.status} />
                                         </div>
                                         <div className="text-xs text-gray-500">
                                             {new Date(quote.date).toLocaleDateString()} · <span className="font-medium text-gray-900">{Number(quote.total).toFixed(2)}€</span>
