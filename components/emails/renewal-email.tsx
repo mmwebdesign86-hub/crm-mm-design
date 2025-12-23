@@ -137,7 +137,7 @@ const main = {
 const container = {
     margin: "0 auto",
     width: "100%",
-    maxWidth: "100%", // FORCE FULL WIDTH
+    maxWidth: "640", // FORCE FULL WIDTH
     backgroundColor: "#ffffff",
     padding: "0",
 };
