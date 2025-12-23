@@ -46,7 +46,7 @@ export const RenewalEmail = ({
                         />
                     </Section>
 
-                    {/* MAIN CONTENT */}
+                    {/* MAIN CONTENT - WITH EXPLICIT PADDING SEPARATION */}
                     <Section style={contentWrapper}>
 
                         <Heading style={h1}>Hola, {clientName}</Heading>
@@ -130,13 +130,14 @@ const main = {
     fontFamily: 'Helvetica, Arial, sans-serif',
     margin: "0",
     padding: "0",
+    width: "100%",
 };
 
-// V6: Width 800px, No padding
+// V7: STRICT 100% MAXWIDTH
 const container = {
     margin: "0 auto",
     width: "100%",
-    maxWidth: "800px", // Wider container (V6)
+    maxWidth: "100%", // FORCE FULL WIDTH
     backgroundColor: "#ffffff",
     padding: "0",
 };
@@ -155,9 +156,9 @@ const bannerImage = {
     border: "none",
 };
 
-// CONTENT
+// CONTENT - V7: EXPLICIT PADDING
 const contentWrapper = {
-    padding: "60px 40px 40px", // V6: Top padding increased to 60px
+    padding: "60px 40px 40px 40px", // 60px TOP, 40px SIDES/BOTTOM
 };
 
 const h1 = {
