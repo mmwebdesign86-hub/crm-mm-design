@@ -41,23 +41,22 @@ export async function updateSession(request: NextRequest) {
 
     // Rutas de API que pueden tener su propia seguridad (ej: CRON)
     const isApiCron = request.nextUrl.pathname.startsWith('/api/cron')
-    const isApiTest = request.nextUrl.pathname.startsWith('/api/send-test')
 
     // 1. Si el usuario NO está logueado y la ruta NO es pública ni API especial
     //    -> Redirigir a /login
-    if (!user && !isPublicPath && !isApiCron && !isApiTest) {
+    if (!user && !isPublicPath && !isApiCron
         const url = request.nextUrl.clone()
-        url.pathname = '/login'
-        return NextResponse.redirect(url)
-    }
+    url.pathname = '/login'
+    return NextResponse.redirect(url)
+}
 
-    // 2. Si el usuario SÍ está logueado y trata de ir a /login
-    //    -> Redirigir al Dashboard (/)
-    if (user && isPublicPath) {
-        const url = request.nextUrl.clone()
-        url.pathname = '/'
-        return NextResponse.redirect(url)
-    }
+// 2. Si el usuario SÍ está logueado y trata de ir a /login
+//    -> Redirigir al Dashboard (/)
+if (user && isPublicPath) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/'
+    return NextResponse.redirect(url)
+}
 
-    return response
+return response
 }
