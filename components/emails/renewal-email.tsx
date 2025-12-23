@@ -42,7 +42,7 @@ export const RenewalEmail = ({
                             src="https://crm-mm-design.vercel.app/banner-email.png"
                             alt="MM Design Web Banner"
                             width="100%"
-                            style={bannerImage}
+                            style={{ maxWidth: "640px" }}
                         />
                     </Section>
 
