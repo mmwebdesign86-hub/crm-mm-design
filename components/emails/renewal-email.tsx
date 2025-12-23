@@ -10,6 +10,8 @@ import {
     Text,
     Button,
     Hr,
+    Row,
+    Column,
 } from "@react-email/components";
 import * as React from "react";
 
@@ -20,79 +22,106 @@ interface RenewalEmailProps {
 }
 
 export const RenewalEmail = ({
-    clientName,
+    clientName: rawClientName,
     serviceName,
     renewalDate,
 }: RenewalEmailProps) => {
+    const clientName = rawClientName || "Cliente";
+
     return (
         <Html>
             <Head />
-            <Preview>Aviso importante: Renovación de servicios próximos a vencer</Preview>
+            <Preview>Aviso de Renovación: {serviceName}</Preview>
             <Body style={main}>
+                {/* Full width styling hack: Container is constrained, but we want full width bars.
+            In standard react-email, it's hard to break out of Container if we wrap everything in it.
+            So we will use Sections for full width feel where possible or just design the Container to look 'page-like' 
+            by removing the body background contrast.
+        */}
+
                 <Container style={container}>
-                    {/* Header Logo */}
+                    {/* HEADER - Black Bar */}
                     <Section style={header}>
                         <Text style={logoText}>
                             <span style={{ color: "#E50914" }}>MM</span>
-                            <span style={{ color: "#000000" }}>DESIGN WEB</span>
+                            <span style={{ color: "#ffffff" }}> DESIGN WEB</span>
                         </Text>
                     </Section>
 
-                    {/* Main Content */}
-                    <Section style={content}>
-                        <Heading style={h1}>Hola {clientName},</Heading>
-                        <Text style={text}>
-                            Esperamos que te encuentres bien.
-                        </Text>
-                        <Text style={text}>
-                            Te informamos que tu servicio contratado está próximo a su fecha de renovación.
-                            Para garantizar la continuidad de tu presencia online y evitar interrupciones,
-                            es necesario gestionar la renovación antes de la fecha límite.
+                    {/* MAIN CONTENT */}
+                    <Section style={contentWrapper}>
+
+                        <Heading style={h1}>Hola, {clientName}</Heading>
+
+                        <Text style={paragraph}>
+                            Tu servicio web requiere atención. Para garantizar que tu negocio siga operando
+                            sin interrupciones, hemos preparado el siguiente resumen de renovación.
                         </Text>
 
-                        {/* Info Box */}
-                        <Section style={infoBox}>
-                            <Text style={infoLabel}>SERVICIO A RENOVAR:</Text>
-                            <Text style={infoValue}>{serviceName}</Text>
-                            <Hr style={divider} />
-                            <Text style={infoLabel}>FECHA DE VENCIMIENTO:</Text>
-                            <Text style={dateValue}>{renewalDate}</Text>
+                        {/* DATA BOX - TICKET STYLE */}
+                        <Section style={ticketContainer}>
+                            <Row>
+                                <Column style={ticketLeft}>
+                                    <Text style={ticketLabel}>SERVICIO CONTRATADO</Text>
+                                    <Text style={ticketValueMain}>{serviceName}</Text>
+                                </Column>
+                            </Row>
+                            <Hr style={ticketDivider} />
+                            <Row>
+                                <Column>
+                                    <Text style={{ ...ticketLabel, marginBottom: '4px' }}>FECHA LÍMITE</Text>
+                                    <div style={dateBox}>
+                                        <Text style={dateBoxText}>{renewalDate}</Text>
+                                    </div>
+                                </Column>
+                            </Row>
                         </Section>
 
-                        {/* CTAs */}
+                        <Text style={paragraph}>
+                            Por favor, confirma la continuidad del servicio haciendo clic en el botón a continuación.
+                        </Text>
+
+                        {/* ACTION BUTTONS */}
                         <Section style={btnContainer}>
                             <Button
-                                style={button}
+                                style={primaryButton}
                                 href="mailto:contacto@mmdesignweb.com?subject=Confirmación de Renovación"
                             >
-                                CONFIRMAR POR EMAIL
+                                CONFIRMAR RENOVACIÓN
                             </Button>
                         </Section>
 
-                        <Section style={center}>
-                            <Link href="https://wa.me/34656948148" style={secondaryLink}>
-                                Contactar por WhatsApp
-                            </Link>
+                        <Section style={{ textAlign: "center", marginBottom: "40px" }}>
+                            <Button
+                                style={whatsappButton}
+                                href="https://wa.me/34656948148"
+                            >
+                                GESTIONAR POR WHATSAPP
+                            </Button>
                         </Section>
+
                     </Section>
 
-                    {/* Footer */}
+                    {/* FOOTER - Dark */}
                     <Section style={footer}>
-                        <Hr style={footerDivider} />
-                        <Text style={footerText}>
-                            <strong>MM DESIGN WEB</strong>
-                            <br />
-                            C/ Sant Ramon, 29 Bajos, 08350, Arenys de Mar, Barcelona.
+                        <Text style={footerLogo}>
+                            <span style={{ color: "#E50914" }}>MM</span> DESIGN WEB
                         </Text>
-                        <Text style={footerText}>
-                            Email: <Link href="mailto:contacto@mmdesignweb.com" style={link}>contacto@mmdesignweb.com</Link>
-                            <br />
-                            Teléfono: <Link href="tel:+34656948148" style={link}>656948148</Link>
+                        <Text style={footerAddress}>
+                            C/ Sant Ramon, 29 Bajos, 08350<br />
+                            Arenys de Mar, Barcelona (Spain)
                         </Text>
+                        <Text style={footerContact}>
+                            <Link href="mailto:contacto@mmdesignweb.com" style={footerLink}>contacto@mmdesignweb.com</Link>
+                            &nbsp;&nbsp;|&nbsp;&nbsp;
+                            <Link href="tel:+34656948148" style={footerLink}>+34 656 948 148</Link>
+                        </Text>
+                        <Hr style={footerLine} />
                         <Text style={copyright}>
-                            © {new Date().getFullYear()} MM Design Web. Todos los derechos reservados.
+                            © {new Date().getFullYear()} MM Design Web. Agencia Digital Premium.
                         </Text>
                     </Section>
+
                 </Container>
             </Body>
         </Html>
@@ -101,143 +130,178 @@ export const RenewalEmail = ({
 
 export default RenewalEmail;
 
+// STYLES
+
 const main = {
-    backgroundColor: "#f6f9fc",
-    fontFamily:
-        '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
+    backgroundColor: "#ffffff", // White background for the whole window (Paper feel)
+    fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif',
 };
 
 const container = {
-    backgroundColor: "#ffffff",
     margin: "0 auto",
-    padding: "20px 0 48px",
-    marginBottom: "64px",
-    maxWidth: "600px",
-    borderRadius: "5px",
-    boxShadow: "0 2px 5px rgba(0,0,0,0.05)",
+    width: "600px",
+    maxWidth: "100%",
+    backgroundColor: "#ffffff",
 };
 
+// HEADER
 const header = {
-    padding: "20px 48px",
+    backgroundColor: "#000000",
+    padding: "30px 20px",
     textAlign: "center" as const,
 };
 
 const logoText = {
-    fontSize: "24px",
-    fontWeight: "bold",
-    letterSpacing: "-1px",
+    fontSize: "26px",
+    fontWeight: "900", // Extra bold
+    letterSpacing: "2px",
     margin: "0",
+    textTransform: "uppercase" as const,
 };
 
-const content = {
-    padding: "0 48px",
+// CONTENT
+const contentWrapper = {
+    padding: "40px 40px",
 };
 
 const h1 = {
-    color: "#333",
+    color: "#111111",
     fontSize: "24px",
-    fontWeight: "bold",
-    margin: "40px 0",
-    padding: "0",
+    fontWeight: "700",
+    margin: "0 0 20px",
+    letterSpacing: "-0.5px",
 };
 
-const text = {
-    color: "#333",
+const paragraph = {
+    color: "#444444",
     fontSize: "16px",
     lineHeight: "26px",
-    marginBottom: "20px",
+    marginBottom: "24px",
 };
 
-const infoBox = {
-    backgroundColor: "#f9f9f9",
-    borderRadius: "8px",
+// TICKET / DATA BOX
+const ticketContainer = {
+    backgroundColor: "#f8f9fa",
+    border: "1px solid #e2e8f0",
+    borderRadius: "12px",
     padding: "24px",
-    margin: "24px 0",
-    border: "1px solid #e6e6e6",
+    margin: "30px 0",
 };
 
-const infoLabel = {
-    color: "#666",
-    fontSize: "12px",
-    fontWeight: "bold",
+const ticketLeft = {
+    paddingRight: "10px",
+};
+
+const ticketLabel = {
+    color: "#888888",
+    fontSize: "11px",
+    fontWeight: "700",
     textTransform: "uppercase" as const,
-    letterSpacing: "1px",
+    letterSpacing: "1.2px",
     margin: "0 0 8px",
 };
 
-const infoValue = {
-    color: "#000",
+const ticketValueMain = {
+    color: "#111111",
     fontSize: "18px",
-    fontWeight: "500",
-    margin: "0 0 16px",
-};
-
-const dateValue = {
-    color: "#E50914",
-    fontSize: "20px",
-    fontWeight: "bold",
+    fontWeight: "600",
     margin: "0",
 };
 
-const divider = {
-    borderColor: "#e6e6e6",
-    margin: "16px 0",
+const ticketDivider = {
+    borderColor: "#e2e8f0",
+    borderStyle: "dashed",
+    margin: "20px 0",
 };
 
+const dateBox = {
+    display: "inline-block",
+    // In email, padding/bg works on div usually, but Text inside best.
+};
+
+const dateBoxText = {
+    fontSize: "28px",
+    fontWeight: "800",
+    color: "#E50914",
+    margin: "0",
+    letterSpacing: "-1px",
+};
+
+// BUTTONS
 const btnContainer = {
     textAlign: "center" as const,
-    margin: "32px 0 24px",
+    marginTop: "10px",
+    marginBottom: "16px",
 };
 
-const button = {
+const primaryButton = {
     backgroundColor: "#E50914",
-    borderRadius: "4px",
-    color: "#fff",
+    borderRadius: "6px",
+    color: "#ffffff",
     fontSize: "16px",
     fontWeight: "bold",
     textDecoration: "none",
     textAlign: "center" as const,
-    display: "block",
-    padding: "16px 24px",
-    width: "100%",
+    display: "inline-block", // Changed to inline-block for better spacing control if needed, but block in section works
+    padding: "16px 32px",
+    width: "100%", // Full width button looks good on mobile
+    maxWidth: "280px", // But allow it to not be massive on desktop
 };
 
-const center = {
+const whatsappButton = {
+    backgroundColor: "#25D366",
+    borderRadius: "6px",
+    color: "#ffffff",
+    fontSize: "14px",
+    fontWeight: "bold",
+    textDecoration: "none",
+    textAlign: "center" as const,
+    display: "inline-block",
+    padding: "12px 24px",
+    width: "100%",
+    maxWidth: "280px",
+};
+
+// FOOTER
+const footer = {
+    backgroundColor: "#111111", // Dark Gray/Black
+    padding: "40px 20px",
     textAlign: "center" as const,
 };
 
-const secondaryLink = {
-    color: "#25D366", // WhatsApp Green
-    fontSize: "15px",
-    textDecoration: "underline",
-    fontWeight: "500",
+const footerLogo = {
+    color: "#ffffff",
+    fontSize: "18px",
+    fontWeight: "bold",
+    letterSpacing: "1px",
+    margin: "0 0 20px",
 };
 
-const footer = {
-    padding: "0 48px",
-    marginTop: "32px",
-};
-
-const footerDivider = {
-    borderColor: "#e6e6e6",
-    margin: "24px 0",
-};
-
-const footerText = {
-    color: "#8898aa",
+const footerAddress = {
+    color: "#888888",
     fontSize: "12px",
-    lineHeight: "16px",
-    marginBottom: "12px",
+    lineHeight: "20px",
+    margin: "0 0 10px",
 };
 
-const link = {
-    color: "#8898aa",
-    textDecoration: "underline",
+const footerContact = {
+    color: "#888888",
+    fontSize: "12px",
+    marginBottom: "20px",
+};
+
+const footerLink = {
+    color: "#ffffff",
+    textDecoration: "none",
+};
+
+const footerLine = {
+    borderColor: "#333333",
+    margin: "20px 0",
 };
 
 const copyright = {
-    color: "#8898aa",
-    fontSize: "12px",
-    marginTop: "20px",
-    textAlign: "center" as const,
+    color: "#555555",
+    fontSize: "11px",
+    margin: "0",
 };
