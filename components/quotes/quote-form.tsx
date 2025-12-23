@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Trash2, Plus, Save, ArrowLeft } from 'lucide-react'
-import { createQuoteAction } from '@/app/(dashboard)/quotes/actions'
+import { createQuoteAction, updateQuoteAction } from '@/app/(dashboard)/quotes/actions'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import {
@@ -17,18 +17,26 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-export function QuoteForm({ clients }: { clients: any[] }) {
+interface QuoteFormProps {
+    clients: any[]
+    initialData?: any // If provided, we are in Edit Mode
+}
+
+export function QuoteForm({ clients, initialData }: QuoteFormProps) {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
-    const [clientId, setClientId] = useState('')
-    const [items, setItems] = useState([{ concept: '', description: '', price: 0 }])
-    const [notes, setNotes] = useState('')
-    const [total, setTotal] = useState(0)
-    const [date, setDate] = useState(new Date().toISOString().split('T')[0])
+    const [clientId, setClientId] = useState(initialData?.client_id || '')
+    const [items, setItems] = useState(initialData?.items || [{ concept: '', description: '', price: 0 }])
+    const [notes, setNotes] = useState(initialData?.notes || '')
+    const [total, setTotal] = useState(initialData?.total || 0)
+    // Format date for input: YYYY-MM-DD (take first 10 chars of ISO string)
+    const [date, setDate] = useState(initialData?.date ? initialData.date.split('T')[0] : new Date().toISOString().split('T')[0])
+
+    const isEditMode = !!initialData
 
     // Calculate total whenever items change
     useEffect(() => {
-        const newTotal = items.reduce((sum, item) => sum + (Number(item.price) || 0), 0)
+        const newTotal = items.reduce((sum: number, item: any) => sum + (Number(item.price) || 0), 0)
         setTotal(newTotal)
     }, [items])
 
@@ -37,7 +45,7 @@ export function QuoteForm({ clients }: { clients: any[] }) {
     }
 
     const removeItem = (index: number) => {
-        setItems(items.filter((_, i) => i !== index))
+        setItems(items.filter((_: any, i: number) => i !== index))
     }
 
     const updateItem = (index: number, field: string, value: any) => {
@@ -58,18 +66,21 @@ export function QuoteForm({ clients }: { clients: any[] }) {
         formData.append('total', total.toString())
         formData.append('date', date)
 
-        const result = await createQuoteAction(formData)
+        let result;
+
+        if (isEditMode) {
+            formData.append('id', initialData.id)
+            result = await updateQuoteAction(formData)
+        } else {
+            result = await createQuoteAction(formData)
+        }
 
         if (result?.error) {
             alert(result.error)
             setIsLoading(false)
         } else {
-            // Redirect to the new Quote Detail Page
-            if (result?.id) {
-                router.push(`/quotes/${result.id}`)
-            } else {
-                router.push('/quotes')
-            }
+            // Redirect to the list or detail
+            router.push('/quotes')
             router.refresh()
         }
     }
@@ -84,7 +95,9 @@ export function QuoteForm({ clients }: { clients: any[] }) {
                         <ArrowLeft className="h-6 w-6" />
                     </Link>
                 </Button>
-                <h1 className="text-2xl font-bold text-white">Nuevo Presupuesto</h1>
+                <h1 className="text-2xl font-bold text-white">
+                    {isEditMode ? `Editar Presupuesto ${initialData.quote_number}` : 'Nuevo Presupuesto'}
+                </h1>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
@@ -127,7 +140,7 @@ export function QuoteForm({ clients }: { clients: any[] }) {
                 </div>
 
                 <div className="space-y-4">
-                    {items.map((item, index) => (
+                    {items.map((item: any, index: number) => (
                         <div key={index} className="grid gap-4 p-4 rounded-lg border border-gray-800 bg-[#1a1a1a] relative group">
                             <div className="absolute top-2 right-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
                                 <Button
@@ -209,7 +222,7 @@ export function QuoteForm({ clients }: { clients: any[] }) {
                         disabled={isLoading}
                         className="w-full bg-[#DC2626] hover:bg-red-700 text-white font-bold py-3 h-auto whitespace-normal leading-tight text-base shadow-lg shadow-red-900/20"
                     >
-                        {isLoading ? 'Guardando...' : 'GUARDAR PRESUPUESTO'}
+                        {isLoading ? 'Guardando...' : (isEditMode ? 'ACTUALIZAR DATOS' : 'GUARDAR PRESUPUESTO')}
                     </Button>
                 </div>
             </div>

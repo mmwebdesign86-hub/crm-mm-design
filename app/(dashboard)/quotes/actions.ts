@@ -66,3 +66,57 @@ export async function deleteQuoteAction(id: string) {
 
     return { success: true }
 }
+
+export async function updateQuoteStatusAction(id: string, status: string) {
+    const supabase = await createClient()
+
+    const { error } = await supabase
+        .from('quotes')
+        .update({ status })
+        .eq('id', id)
+
+    if (error) {
+        console.error('Error updating quote status:', error)
+        return { error: 'Error al actualizar el estado: ' + error.message }
+    }
+
+    revalidatePath('/quotes')
+    return { success: true }
+}
+
+export async function updateQuoteAction(formData: FormData) {
+    const supabase = await createClient()
+
+    const id = formData.get('id') as string // ID for updating
+    const client_id = formData.get('client_id') as string
+    const date = formData.get('date') as string
+    const notes = formData.get('notes') as string
+    const itemsJson = formData.get('items') as string
+    const total = formData.get('total') as string
+    
+    // Validate inputs
+    if (!id) return { error: 'ID de presupuesto no encontrado' }
+    if (!client_id) return { error: 'Debes seleccionar un cliente' }
+
+    const items = JSON.parse(itemsJson)
+
+    const { error } = await supabase
+        .from('quotes')
+        .update({
+            client_id,
+            date: date || new Date().toISOString(),
+            items,
+            notes,
+            total: parseFloat(total)
+        })
+        .eq('id', id)
+
+    if (error) {
+        console.error('Error updating quote:', error)
+        return { error: 'Error al actualizar el presupuesto: ' + error.message }
+    }
+
+    revalidatePath('/quotes')
+    revalidatePath(`/quotes/${id}`)
+    return { success: true, id }
+}

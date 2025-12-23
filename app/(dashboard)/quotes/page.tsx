@@ -1,12 +1,12 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Plus, FileText, Calendar, User } from 'lucide-react'
+import { Plus, FileText, Calendar, User, Pencil } from 'lucide-react'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { Badge } from '@/components/ui/badge'
 import { QuotePDFButton } from '@/components/quotes/quote-pdf-button'
 import { QuoteDeleteButton } from '@/components/quotes/quote-delete-button'
+import { QuoteStatusToggle } from '@/components/quotes/quote-status-toggle'
 
 export default async function QuotesPage() {
     const supabase = await createClient()
@@ -29,21 +29,6 @@ export default async function QuotesPage() {
             )
         `)
         .order('created_at', { ascending: false })
-
-    const getStatusBadge = (status: string) => {
-        switch (status) {
-            case 'draft':
-                return <Badge variant="secondary" className="bg-gray-200 text-gray-700 hover:bg-gray-300">Borrador</Badge>
-            case 'sent':
-                return <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-200 border-blue-200">Enviado</Badge>
-            case 'accepted':
-                return <Badge className="bg-green-100 text-green-700 hover:bg-green-200 border-green-200">Aceptado</Badge>
-            case 'rejected':
-                return <Badge variant="destructive">Rechazado</Badge>
-            default:
-                return <Badge variant="outline">{status}</Badge>
-        }
-    }
 
     return (
         <div className="space-y-6">
@@ -74,9 +59,9 @@ export default async function QuotesPage() {
                                     <FileText className="h-6 w-6 text-red-600" />
                                 </div>
                                 <div>
-                                    <div className="flex items-center gap-2 mb-1">
+                                    <div className="flex items-center gap-3 mb-1">
                                         <h3 className="text-lg font-bold text-gray-900">{quote.quote_number}</h3>
-                                        {getStatusBadge(quote.status)}
+                                        <QuoteStatusToggle id={quote.id} initialStatus={quote.status} />
                                     </div>
                                     <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-gray-500">
                                         <div className="flex items-center gap-1.5">
@@ -100,8 +85,18 @@ export default async function QuotesPage() {
                                 </div>
 
                                 <div className="flex items-center gap-2">
-                                    {/* Print, PDF, Email actions all handled in QuotePDFButton (which is client side) */}
-                                    {/* We removed the raw Print button to avoid Server Component error */}
+                                    <Button
+                                        asChild
+                                        variant="ghost"
+                                        size="icon"
+                                        className="text-gray-400 hover:text-blue-600 hover:bg-blue-50"
+                                        title="Editar Presupuesto"
+                                    >
+                                        <Link href={`/quotes/${quote.id}/edit`}>
+                                            <Pencil className="h-4 w-4" />
+                                        </Link>
+                                    </Button>
+
                                     <QuotePDFButton quote={quote} client={quote.clients} />
                                     <QuoteDeleteButton id={quote.id} />
                                 </div>
