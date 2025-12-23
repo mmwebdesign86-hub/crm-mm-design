@@ -26,11 +26,29 @@ export function QuoteForm({ clients, initialData }: QuoteFormProps) {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
     const [clientId, setClientId] = useState(initialData?.client_id || '')
-    const [items, setItems] = useState(initialData?.items || [{ concept: '', description: '', price: 0 }])
+    const [items, setItems] = useState<any[]>(() => {
+        // Defensive check: ensure items is an array
+        if (Array.isArray(initialData?.items)) return initialData.items
+        // If it's a string, try to parse
+        if (typeof initialData?.items === 'string') {
+            try {
+                const parsed = JSON.parse(initialData.items)
+                if (Array.isArray(parsed)) return parsed
+            } catch (e) {
+                console.error("Failed to parse items:", e)
+            }
+        }
+        return [{ concept: '', description: '', price: 0 }]
+    })
     const [notes, setNotes] = useState(initialData?.notes || '')
     const [total, setTotal] = useState(initialData?.total || 0)
     // Format date for input: YYYY-MM-DD (take first 10 chars of ISO string)
-    const [date, setDate] = useState(initialData?.date ? initialData.date.split('T')[0] : new Date().toISOString().split('T')[0])
+    const [date, setDate] = useState(() => {
+        if (initialData?.date) {
+            return initialData.date.split('T')[0]
+        }
+        return new Date().toISOString().split('T')[0]
+    })
 
     const isEditMode = !!initialData
 

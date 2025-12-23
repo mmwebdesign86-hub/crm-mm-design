@@ -5,11 +5,17 @@ import { notFound } from 'next/navigation'
 export default async function EditQuotePage({ params }: { params: { id: string } }) {
     const supabase = await createClient()
 
+    // Robustly handle params for Next.js 15+ compatibility
+    // In Next.js 15 params is a promise, but in 14 it is not.
+    // If it's a promise, await it. If not, use it directly.
+    const resolvedParams = await Promise.resolve(params)
+    const id = resolvedParams.id
+
     // Fetch quote
     const { data: quote } = await supabase
         .from('quotes')
         .select('*')
-        .eq('id', params.id)
+        .eq('id', id)
         .single()
 
     if (!quote) {
