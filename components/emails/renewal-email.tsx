@@ -128,15 +128,15 @@ export default RenewalEmail;
 const main = {
     backgroundColor: "#ffffff",
     fontFamily: 'Helvetica, Arial, sans-serif',
-    margin: "0", // Reset margin
-    padding: "0", // Reset padding for bleed effect
+    margin: "0",
+    padding: "0",
 };
 
-// V5: Width 680px, No padding
+// V6: Width 800px, No padding
 const container = {
     margin: "0 auto",
     width: "100%",
-    maxWidth: "680px", // Wider container
+    maxWidth: "800px", // Wider container (V6)
     backgroundColor: "#ffffff",
     padding: "0",
 };
@@ -149,7 +149,7 @@ const bannerSection = {
 };
 
 const bannerImage = {
-    width: "100%", // Force full width relative to container
+    width: "100%",
     maxWidth: "100%",
     display: "block",
     border: "none",
@@ -157,7 +157,7 @@ const bannerImage = {
 
 // CONTENT
 const contentWrapper = {
-    padding: "40px 40px 40px", // Top padding 40px added to separate text from banner
+    padding: "60px 40px 40px", // V6: Top padding increased to 60px
 };
 
 const h1 = {
