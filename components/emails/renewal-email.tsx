@@ -36,13 +36,13 @@ export const RenewalEmail = ({
             <Body style={main}>
                 <Container style={container}>
 
-                    {/* HEADER - Logo Centered with more space */}
-                    <Section style={header}>
+                    {/* HERO BANNER - Full Width, No Padding Top */}
+                    <Section style={bannerSection}>
                         <Img
-                            src="https://crm-mm-design.vercel.app/logo-email.png"
-                            alt="MM Design Web Logo"
-                            width="200"
-                            style={logo}
+                            src="https://crm-mm-design.vercel.app/banner-email.png"
+                            alt="MM Design Web Banner"
+                            width="100%"
+                            style={bannerImage}
                         />
                     </Section>
 
@@ -56,7 +56,7 @@ export const RenewalEmail = ({
                             sin interrupciones, te enviamos los detalles de tu próxima renovación.
                         </Text>
 
-                        {/* DATA BOX - APPLE CARD STYLE WITH MORE SPACE */}
+                        {/* DATA BOX */}
                         <Section style={appleCard}>
                             <Row>
                                 <Column>
@@ -128,53 +128,58 @@ export default RenewalEmail;
 const main = {
     backgroundColor: "#ffffff",
     fontFamily: 'Helvetica, Arial, sans-serif',
+    margin: "0", // Reset margin
+    padding: "0", // Reset padding for bleed effect
 };
 
-// V4: Increased width/removed margins for full width feel
+// V5: Width 680px, No padding
 const container = {
     margin: "0 auto",
     width: "100%",
-    maxWidth: "600px", // Still constrained for readability on desktop, but full width logic applied via parent Body
+    maxWidth: "680px", // Wider container
     backgroundColor: "#ffffff",
-    padding: "0", // Remove padding on container itself, handle in sections
+    padding: "0",
 };
 
-// HEADER
-const header = {
-    padding: "50px 0 50px", // Increased padding: 50px top/bottom
-    textAlign: "center" as const,
+// BANNER
+const bannerSection = {
+    width: "100%",
+    margin: "0",
+    padding: "0",
 };
 
-const logo = {
-    margin: "0 auto",
+const bannerImage = {
+    width: "100%", // Force full width relative to container
+    maxWidth: "100%",
     display: "block",
+    border: "none",
 };
 
 // CONTENT
 const contentWrapper = {
-    padding: "0 40px 40px",
+    padding: "40px 40px 40px", // Top padding 40px added to separate text from banner
 };
 
 const h1 = {
     color: "#1a1a1a",
     fontSize: "24px",
     fontWeight: "bold",
-    margin: "0 0 30px", // Increased margin bottom
+    margin: "0 0 30px",
 };
 
 const paragraph = {
     color: "#1a1a1a",
     fontSize: "16px",
     lineHeight: "24px",
-    marginBottom: "30px", // Increased margin bottom
+    marginBottom: "30px",
 };
 
 // CARD
 const appleCard = {
     backgroundColor: "#F5F5F7",
     borderRadius: "12px",
-    padding: "30px", // Increased padding inside card
-    margin: "10px 0 40px", // Increased margin bottom
+    padding: "30px",
+    margin: "10px 0 40px",
 };
 
 const cardLabel = {
@@ -195,7 +200,7 @@ const cardValue = {
 
 const cardDate = {
     color: "#E50914",
-    fontSize: "22px", // Slightly larger
+    fontSize: "22px",
     fontWeight: "bold",
     margin: "0",
 };
@@ -213,24 +218,22 @@ const btnContainer = {
 
 const primaryButton = {
     backgroundColor: "#E50914",
-    borderRadius: "6px", // Less rounded, more aggressive/solid
+    borderRadius: "6px",
     color: "#ffffff",
     fontSize: "16px",
     fontWeight: "bold",
     textDecoration: "none",
     textAlign: "center" as const,
-    display: "inline-block", // Block behavior handled by width if needed, but inline-block is safer in some clients. 
-    // To make it full width-ish but constrained:
+    display: "inline-block",
     width: "100%",
     maxWidth: "350px",
     padding: "16px 0",
-    boxSizing: "border-box" as const, // Ensure padding doesn't break width
 };
 
 const whatsappButton = {
     backgroundColor: "#25D366",
     borderRadius: "6px",
-    color: "#ffffff", // White text on Green for high contrast
+    color: "#ffffff",
     fontSize: "16px",
     fontWeight: "bold",
     textDecoration: "none",
@@ -243,14 +246,14 @@ const whatsappButton = {
 
 // FOOTER - RED FERRARI
 const footer = {
-    backgroundColor: "#E50914", // RED BACKGROUND
+    backgroundColor: "#E50914",
     padding: "40px 20px",
     textAlign: "center" as const,
     width: "100%",
 };
 
 const footerAddress = {
-    color: "#FFFFFF", // WHITE TEXT
+    color: "#FFFFFF",
     fontSize: "14px",
     fontWeight: "bold",
     lineHeight: "22px",
@@ -258,19 +261,19 @@ const footerAddress = {
 };
 
 const footerLinks = {
-    color: "#FFFFFF", // WHITE TEXT
+    color: "#FFFFFF",
     fontSize: "14px",
     fontWeight: "bold",
     margin: "0 0 20px",
 };
 
 const footerLink = {
-    color: "#FFFFFF", // WHITE TEXT
+    color: "#FFFFFF",
     textDecoration: "underline",
 };
 
 const copyright = {
-    color: "rgba(255,255,255,0.8)", // Semi-transparent white
+    color: "rgba(255,255,255,0.8)",
     fontSize: "12px",
     margin: "0",
 };
