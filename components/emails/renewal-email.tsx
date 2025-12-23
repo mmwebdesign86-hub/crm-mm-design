@@ -36,7 +36,7 @@ export const RenewalEmail = ({
             <Body style={main}>
                 <Container style={container}>
 
-                    {/* HEADER - Logo Centered */}
+                    {/* HEADER - Logo Centered with more space */}
                     <Section style={header}>
                         <Img
                             src="https://crm-mm-design.vercel.app/logo-email.png"
@@ -52,11 +52,11 @@ export const RenewalEmail = ({
                         <Heading style={h1}>Hola, {clientName}</Heading>
 
                         <Text style={paragraph}>
-                            Tu servicio web requiere atención. Para garantizar la continuidad de tu presencia digital
+                            Tu servicio web requiere atención inmediata. Para garantizar la continuidad de tu presencia digital
                             sin interrupciones, te enviamos los detalles de tu próxima renovación.
                         </Text>
 
-                        {/* DATA BOX - APPLE CARD STYLE */}
+                        {/* DATA BOX - APPLE CARD STYLE WITH MORE SPACE */}
                         <Section style={appleCard}>
                             <Row>
                                 <Column>
@@ -67,7 +67,7 @@ export const RenewalEmail = ({
                             <Hr style={cardDivider} />
                             <Row>
                                 <Column>
-                                    <Text style={cardLabel}>FECHA DE VENCIMIENTO</Text>
+                                    <Text style={cardLabel}>FECHA VENCIMIENTO</Text>
                                     <Text style={cardDate}>{renewalDate}</Text>
                                 </Column>
                             </Row>
@@ -83,22 +83,23 @@ export const RenewalEmail = ({
                                 style={primaryButton}
                                 href="mailto:contacto@mmdesignweb.com?subject=Confirmación de Renovación"
                             >
-                                Confirmar Renovación
+                                CONFIRMAR RENOVACIÓN
                             </Button>
-                        </Section>
 
-                        <Section style={{ textAlign: "center", marginBottom: "40px" }}>
-                            <Link
-                                style={whatsappLink}
+                            {/* Spacer */}
+                            <div style={{ height: "15px" }}></div>
+
+                            <Button
+                                style={whatsappButton}
                                 href="https://wa.me/34656948148"
                             >
-                                o gestionarlo por WhatsApp
-                            </Link>
+                                GESTIONAR POR WHATSAPP 💬
+                            </Button>
                         </Section>
 
                     </Section>
 
-                    {/* FOOTER - Dark */}
+                    {/* FOOTER - RED FERRARI */}
                     <Section style={footer}>
                         <Text style={footerAddress}>
                             MM DESIGN WEB<br />
@@ -129,16 +130,18 @@ const main = {
     fontFamily: 'Helvetica, Arial, sans-serif',
 };
 
+// V4: Increased width/removed margins for full width feel
 const container = {
     margin: "0 auto",
     width: "100%",
-    maxWidth: "600px",
+    maxWidth: "600px", // Still constrained for readability on desktop, but full width logic applied via parent Body
     backgroundColor: "#ffffff",
+    padding: "0", // Remove padding on container itself, handle in sections
 };
 
 // HEADER
 const header = {
-    padding: "40px 0 20px", // Top padding 40px
+    padding: "50px 0 50px", // Increased padding: 50px top/bottom
     textAlign: "center" as const,
 };
 
@@ -149,33 +152,33 @@ const logo = {
 
 // CONTENT
 const contentWrapper = {
-    padding: "0 40px 40px", // Side padding 40px
+    padding: "0 40px 40px",
 };
 
 const h1 = {
     color: "#1a1a1a",
     fontSize: "24px",
     fontWeight: "bold",
-    margin: "0 0 24px",
+    margin: "0 0 30px", // Increased margin bottom
 };
 
 const paragraph = {
     color: "#1a1a1a",
     fontSize: "16px",
     lineHeight: "24px",
-    marginBottom: "24px",
+    marginBottom: "30px", // Increased margin bottom
 };
 
-// APPLE CARD
+// CARD
 const appleCard = {
     backgroundColor: "#F5F5F7",
     borderRadius: "12px",
-    padding: "24px",
-    margin: "24px 0",
+    padding: "30px", // Increased padding inside card
+    margin: "10px 0 40px", // Increased margin bottom
 };
 
 const cardLabel = {
-    color: "#86868b", // Apple Gray text
+    color: "#86868b",
     fontSize: "12px",
     fontWeight: "600",
     textTransform: "uppercase" as const,
@@ -191,8 +194,8 @@ const cardValue = {
 };
 
 const cardDate = {
-    color: "#E50914", // Red Brand
-    fontSize: "18px",
+    color: "#E50914",
+    fontSize: "22px", // Slightly larger
     fontWeight: "bold",
     margin: "0",
 };
@@ -205,56 +208,69 @@ const cardDivider = {
 // BUTTONS
 const btnContainer = {
     textAlign: "center" as const,
-    margin: "32px 0 16px",
+    margin: "20px 0 40px",
 };
 
 const primaryButton = {
     backgroundColor: "#E50914",
-    borderRadius: "980px", // Fully rounded pill
+    borderRadius: "6px", // Less rounded, more aggressive/solid
     color: "#ffffff",
     fontSize: "16px",
-    fontWeight: "500",
+    fontWeight: "bold",
+    textDecoration: "none",
+    textAlign: "center" as const,
+    display: "inline-block", // Block behavior handled by width if needed, but inline-block is safer in some clients. 
+    // To make it full width-ish but constrained:
+    width: "100%",
+    maxWidth: "350px",
+    padding: "16px 0",
+    boxSizing: "border-box" as const, // Ensure padding doesn't break width
+};
+
+const whatsappButton = {
+    backgroundColor: "#25D366",
+    borderRadius: "6px",
+    color: "#ffffff", // White text on Green for high contrast
+    fontSize: "16px",
+    fontWeight: "bold",
     textDecoration: "none",
     textAlign: "center" as const,
     display: "inline-block",
-    padding: "14px 30px",
+    width: "100%",
+    maxWidth: "350px",
+    padding: "16px 0",
 };
 
-const whatsappLink = {
-    color: "#25D366",
-    fontSize: "15px",
-    textDecoration: "none",
-    fontWeight: "500",
-};
-
-// FOOTER
+// FOOTER - RED FERRARI
 const footer = {
-    backgroundColor: "#000000",
+    backgroundColor: "#E50914", // RED BACKGROUND
     padding: "40px 20px",
     textAlign: "center" as const,
     width: "100%",
 };
 
 const footerAddress = {
-    color: "#888888",
-    fontSize: "12px",
-    lineHeight: "18px",
-    margin: "0 0 12px",
+    color: "#FFFFFF", // WHITE TEXT
+    fontSize: "14px",
+    fontWeight: "bold",
+    lineHeight: "22px",
+    margin: "0 0 16px",
 };
 
 const footerLinks = {
-    color: "#888888",
-    fontSize: "12px",
+    color: "#FFFFFF", // WHITE TEXT
+    fontSize: "14px",
+    fontWeight: "bold",
     margin: "0 0 20px",
 };
 
 const footerLink = {
-    color: "#888888",
+    color: "#FFFFFF", // WHITE TEXT
     textDecoration: "underline",
 };
 
 const copyright = {
-    color: "#444444",
-    fontSize: "10px",
+    color: "rgba(255,255,255,0.8)", // Semi-transparent white
+    fontSize: "12px",
     margin: "0",
 };
