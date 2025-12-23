@@ -17,22 +17,42 @@ export function QuotePDFButton({ quote, client }: QuotePDFButtonProps) {
     // If empty, it will use the Text Fallback (MM DESIGN WEB).
     const LOGO_BASE64 = "";
 
-    const generatePDF = () => {
+    const generatePDF = async () => {
         const doc = new jsPDF()
 
         try {
-            // 1. LOGO STRATEGY
-            if (LOGO_BASE64) {
-                // Use User Provided Logo
-                doc.addImage(LOGO_BASE64, 'PNG', 15, 10, 50, 40)
-            } else {
-                // 2. TEXT FALLBACK (Default)
-                doc.setTextColor(220, 38, 38) // MM Red
-                doc.setFontSize(22) // Impact Size
+            try {
+                // 1. FETCH LOGO FROM PUBLIC FOLDER
+                const response = await fetch('/logo-email.png')
+                if (!response.ok) throw new Error('Logo fetch failed')
+
+                const blob = await response.blob()
+                const base64 = await new Promise<string>((resolve) => {
+                    const reader = new FileReader()
+                    reader.onloadend = () => resolve(reader.result as string)
+                    reader.readAsDataURL(blob)
+                })
+
+                // 2. CALCULATE ASPECT RATIO
+                const img = new Image()
+                img.src = base64
+                await new Promise((resolve) => { img.onload = resolve })
+
+                const imgWidth = 50 // Fixed width requested
+                const imgHeight = (img.height / img.width) * imgWidth
+
+                // 3. ADD IMAGE TO PDF
+                doc.addImage(base64, 'PNG', 15, 10, imgWidth, imgHeight)
+
+            } catch (logoError) {
+                console.warn('Logo loading failed, using fallback:', logoError)
+                // FALLBACK: OLD TEXT HEADER
+                doc.setTextColor(220, 38, 38)
+                doc.setFontSize(22)
                 doc.setFont('helvetica', 'bold')
                 doc.text('MM DESIGN WEB', 15, 25)
 
-                doc.setTextColor(50, 50, 50) // Gray
+                doc.setTextColor(50, 50, 50)
                 doc.setFontSize(10)
                 doc.setFont('helvetica', 'normal')
                 doc.text('WEB & SEO STUDIO', 15, 32)
