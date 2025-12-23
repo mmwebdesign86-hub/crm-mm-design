@@ -1,4 +1,4 @@
-import { ExpirationEmailTemplate } from '@/components/emails/expiration-email-template';
+import { RenewalEmail } from '@/components/emails/renewal-email';
 import { resend } from '@/lib/resend';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
       from: 'onboarding@resend.dev',
       to: [targetEmail],
       subject: 'Prueba de Sistema de Notificaciones - MM Design Web',
-      react: <ExpirationEmailTemplate clientName="Cliente de Prueba" serviceName = "Mantenimiento Premium" expirationDate="25/12/2025" />,
+      react: <RenewalEmail clientName="Cliente de Prueba" serviceName="Mantenimiento Premium" renewalDate="25/12/2025" />,
     });
 
     if (error) {
